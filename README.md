@@ -1,2 +1,2 @@
 # The_ARHC
-MUSIC/TRADING PLATFORM 
+Built as an artist platform for fan management, collaboration, and a Bitcoin market.
