@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Robbie Rolla | The ARHC Artist Page</title>
+    <meta name="arhc-api-base" content="" />
+    <link rel="stylesheet" href="./artist-page.css" />
+  </head>
+  <body>
+    <main class="artist-page">
+      <section class="artist-hero" aria-labelledby="artist-title">
+        <img src="./assets/robbie-rolla-live.png" alt="Robbie Rolla artist page live studio backdrop" />
+        <div class="hero-overlay">
+          <nav class="artist-nav" aria-label="Artist page">
+            <a href="./index.html">The ARHC</a>
+            <a href="#live">Live</a>
+            <a href="#music">Music</a>
+            <a href="#fans">Fans</a>
+          </nav>
+          <div class="hero-content">
+            <p class="eyebrow">Featured ARHC artist</p>
+            <h1 id="artist-title">Robbie Rolla</h1>
+            <p class="artist-line">Two-part music release, live-room presence, direct fan support, and featured visuals built for listeners who move between street energy, romance, motivation, and culture.</p>
+            <div class="hero-actions">
+              <a class="primary-action" href="#live">Join Live Room</a>
+              <a class="secondary-action" href="#music">Download Music</a>
+            </div>
+            <div class="hero-tags" aria-label="Robbie Rolla fan signals">
+              <span>R&B edge</span>
+              <span>Street soul</span>
+              <span>Fitness culture</span>
+              <span>Direct support</span>
+            </div>
+          </div>
+          <aside class="live-card" aria-label="Current live session">
+            <span class="live-dot"></span>
+            <div>
+              <strong>Studio Room</strong>
+              <small id="live-room-status">Waiting for artist camera</small>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="pulse-section" aria-labelledby="pulse-title">
+        <div class="pulse-copy">
+          <p class="eyebrow">Artist signal</p>
+          <h2 id="pulse-title">Robbie Rolla moves in more than one lane.</h2>
+          <p>For the casual viewer, the page lands fast. For a deeper fan, the music, visuals, live room, and support path all point back to one artist identity.</p>
+        </div>
+        <div class="pulse-grid" aria-label="Fan base dimensions">
+          <article class="pulse-card green">
+            <span>Sound</span>
+            <strong>Hook first</strong>
+            <small>Public streams place the record before the pitch.</small>
+          </article>
+          <article class="pulse-card gold">
+            <span>Image</span>
+            <strong>Recognizable</strong>
+            <small>Cover, live, and video assets repeat the artist imprint.</small>
+          </article>
+          <article class="pulse-card coral">
+            <span>Access</span>
+            <strong>Close room</strong>
+            <small>Live camera energy turns viewers into return visitors.</small>
+          </article>
+          <article class="pulse-card blue">
+            <span>Support</span>
+            <strong>Direct value</strong>
+            <small>Downloads and tips make support feel immediate.</small>
+          </article>
+        </div>
+      </section>
+
+      <section id="live" class="live-section" aria-labelledby="live-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live stream</p>
+            <h2 id="live-title">Artist Camera And Fan Room</h2>
+          </div>
+          <span id="stream-access-pill">Public room</span>
+        </div>
+
+        <div class="live-grid">
+          <div class="stream-stage">
+            <video id="artist-camera" autoplay playsinline muted></video>
+            <div id="camera-placeholder" class="camera-placeholder">
+              <strong>Robbie Rolla Live</strong>
+              <span>Camera and microphone preview starts from this page.</span>
+            </div>
+            <div class="stream-controls" aria-label="Live stream controls">
+              <button id="start-live" type="button">Start Camera</button>
+              <button id="toggle-video" type="button" disabled>Camera On</button>
+              <button id="toggle-audio" type="button" disabled>Mic On</button>
+              <button id="stop-live" type="button" disabled>Stop</button>
+            </div>
+          </div>
+
+          <aside id="fans" class="fan-panel" aria-labelledby="fan-panel-title">
+            <div class="fan-panel-header">
+              <div>
+                <p class="eyebrow">Fan interaction</p>
+                <h3 id="fan-panel-title">Live Room</h3>
+              </div>
+              <span id="fan-count">128 fans</span>
+            </div>
+            <div id="chat-list" class="chat-list" aria-live="polite"></div>
+            <form id="chat-form" class="chat-form">
+              <input name="fanName" aria-label="Fan name" placeholder="Fan name" value="Sky Listener" />
+              <input name="message" aria-label="Live message" placeholder="Send a message or song request" required />
+              <button type="submit">Send</button>
+            </form>
+          </aside>
+        </div>
+      </section>
+
+      <section class="fan-path-section" aria-labelledby="fan-path-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Fan lanes</p>
+            <h2 id="fan-path-title">Built For Different Reasons To Stay</h2>
+          </div>
+          <span>Public viewer flow</span>
+        </div>
+        <div class="fan-path-grid">
+          <a class="fan-path" href="#music" data-fan-path="listener">
+            <span>Listener</span>
+            <strong>Starts with the record</strong>
+            <small>Stream first, then download the part that sticks.</small>
+          </a>
+          <a class="fan-path" href="#video-title" data-fan-path="visual-fan">
+            <span>Visual fan</span>
+            <strong>Finds the image</strong>
+            <small>Rotating video previews invite a full watch.</small>
+          </a>
+          <a class="fan-path" href="#live" data-fan-path="room-energy">
+            <span>Room energy</span>
+            <strong>Looks for presence</strong>
+            <small>Camera and chat make the artist feel active now.</small>
+          </a>
+          <a class="fan-path" href="#support-title" data-fan-path="supporter">
+            <span>Supporter</span>
+            <strong>Wants to back it</strong>
+            <small>PayPal downloads and tips turn attention into action.</small>
+          </a>
+        </div>
+      </section>
+
+      <section id="music" class="music-section" aria-labelledby="music-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Music downloads</p>
+            <h2 id="music-title">Recent Tracks</h2>
+          </div>
+          <span>PayPal downloads</span>
+        </div>
+        <div id="track-grid" class="track-grid"></div>
+      </section>
+
+      <section class="promo-section" aria-labelledby="promo-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Featured links</p>
+            <h2 id="promo-title">Robbie Rolla Around The Web</h2>
+          </div>
+          <span>Artist promotion</span>
+        </div>
+        <div id="promo-grid" class="promo-grid"></div>
+      </section>
+
+      <section class="image-section" aria-labelledby="image-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Artist images</p>
+            <h2 id="image-title">Featured Visuals</h2>
+          </div>
+          <span>Hero, cover, live</span>
+        </div>
+        <div id="image-grid" class="image-grid"></div>
+      </section>
+
+      <section class="video-section" aria-labelledby="video-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Artist video</p>
+            <h2 id="video-title">Featured Video</h2>
+          </div>
+          <span>Public viewing</span>
+        </div>
+        <div id="video-grid" class="video-grid"></div>
+      </section>
+
+      <section class="support-section" aria-labelledby="support-title">
+        <div>
+          <p class="eyebrow">Support Robbie Rolla</p>
+          <h2 id="support-title">Tips, Access, And Subscriber Moments</h2>
+        </div>
+        <form id="support-form" class="support-form">
+          <label>
+            Support amount
+            <input name="amount" type="number" min="1" step="1" value="5" />
+          </label>
+          <label>
+            Contact email
+            <input name="email" type="email" placeholder="fan@example.com" required />
+          </label>
+          <button type="submit">Create PayPal Tip</button>
+        </form>
+        <div id="payment-status" class="payment-status" role="status">Paid downloads and tips use PayPal Orders when the runtime env is connected.</div>
+      </section>
+    </main>
+
+    <script src="./artist-page.js"></script>
+  </body>
+</html>

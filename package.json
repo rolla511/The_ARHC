@@ -1,0 +1,11 @@
+{
+  "name": "the-arhc-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local event runtime for The ARHC artist/subscriber platform prototype.",
+  "scripts": {
+    "start": "node arhc-server.mjs",
+    "check": "node scripts/arhc-health-check.mjs",
+    "check:syntax": "node --check arhc-server.mjs && node --check arhc-app.js && node --check artist-page.js"
+  }
+}

@@ -1,0 +1,1831 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Index Audio Artist Entry</title>
+    <link rel="stylesheet" href="./arhc-styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-mark">IA</div>
+          <div>
+            <p class="eyebrow">Artist entry</p>
+            <h1>Index Audio</h1>
+          </div>
+        </div>
+
+        <nav class="nav-tabs" aria-label="Primary">
+          <button class="nav-tab is-active" data-view="join" type="button">Join</button>
+          <a class="nav-tab nav-link" href="./artist-page.html">Artist Page</a>
+          <button class="nav-tab" data-view="basic" type="button">Basic</button>
+          <button class="nav-tab" data-view="fans" type="button">Fans</button>
+          <button class="nav-tab" data-view="upload" type="button">Upload</button>
+          <button class="nav-tab" data-view="index" type="button">Index</button>
+          <button class="nav-tab" data-view="launch" type="button">Launch</button>
+          <button class="nav-tab" data-view="jvm-time" type="button">JVM Time</button>
+          <button class="nav-tab" data-view="billing" type="button">Billing</button>
+          <button class="nav-tab" data-view="distribution" type="button">Distribute</button>
+          <button class="nav-tab" data-view="promote" type="button">Promote</button>
+          <button class="nav-tab" data-view="bitcoin" type="button">Bitcoin</button>
+          <button class="nav-tab" data-view="partner" type="button">Partner</button>
+          <button class="nav-tab" data-view="support" type="button">Support</button>
+        </nav>
+
+        <section class="compact-panel">
+            <p class="panel-label">Entry model</p>
+          <p><strong>$45/year</strong> gives platform and streaming access. <strong>$90/year</strong> adds index searches and enforcement. Distribution, promotion, and Bitcoin Tree are separate in-house packages.</p>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Subscriber onboarding and launch desk</p>
+            <h2 id="view-title">Join</h2>
+          </div>
+          <div class="topbar-actions">
+            <label class="search-box" for="search">
+              <span>Search</span>
+              <input id="search" type="search" placeholder="Artist, ISRC, song, status" />
+            </label>
+            <button id="reset-demo" class="ghost-button" type="button">Reset Demo</button>
+          </div>
+        </header>
+
+        <section id="join" class="view is-visible" aria-labelledby="view-title">
+          <div class="hero-band">
+            <div class="hero-copy">
+              <p class="eyebrow">For independent artists</p>
+              <h3>Join once, protect the work, then build the audience.</h3>
+              <p>Start with affordable yearly access, collect ownership proof at signup, and guide artists into royalty tracking, marketing support, and fan subscriptions when they are ready.</p>
+            </div>
+            <div class="hero-meter" aria-label="Selected plan summary">
+              <span id="selected-plan-name">Platform Access</span>
+              <strong id="selected-plan-price">$45</strong>
+              <small>per year</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Subscriber signup</p>
+                  <h3>Create Artist Account</h3>
+                </div>
+              </div>
+
+              <form id="signup-form" class="stacked-form" data-ai-section="subscriber-signup">
+                <div class="plan-grid" role="radiogroup" aria-label="Subscription plan">
+                  <label class="plan-card">
+                    <input type="radio" name="plan" value="platform" checked />
+                    <span>Platform Access</span>
+                    <strong>$45/year</strong>
+                    <small>Artist page, music uploads, streaming access, launch dashboard, support.</small>
+                  </label>
+                  <label class="plan-card">
+                    <input type="radio" name="plan" value="protection" />
+                    <span>Index Protection</span>
+                    <strong>$90/year</strong>
+                    <small>Add index searches, audio fingerprint enforcement, and off-platform tracking requests.</small>
+                  </label>
+                </div>
+
+                <div class="form-grid">
+                  <label>
+                    Artist or group name
+                    <input name="artistName" aria-label="Artist or group name" required placeholder="Nova Blue" />
+                  </label>
+                  <label>
+                    Contact email
+                    <input name="email" type="email" aria-label="Contact email" required placeholder="artist@example.com" />
+                  </label>
+                  <label>
+                    Username
+                    <input name="username" required aria-label="Artist username" placeholder="nova-blue" />
+                  </label>
+                  <label>
+                    Account password
+                    <input name="password" type="password" required minlength="8" aria-label="Artist account password" />
+                  </label>
+                  <label>
+                    Confirm password
+                    <input name="passwordConfirm" type="password" required minlength="8" aria-label="Confirm artist account password" />
+                  </label>
+                  <label>
+                    Financial wallet password
+                    <input name="walletPassword" type="password" required minlength="8" aria-label="Artist financial wallet password" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" aria-label="Confirm artist financial wallet password" />
+                  </label>
+                  <label>
+                    Primary genre
+                    <input name="genre" aria-label="Primary genre" required placeholder="Hip-hop, R&B, gospel" />
+                  </label>
+                  <label>
+                    Main goal
+                    <select name="goal" aria-label="Main artist goal">
+                      <option>Track royalties</option>
+                      <option>Release music on platform</option>
+                      <option>Build a fan subscription</option>
+                      <option>Protect content ownership</option>
+                    <option>Marketing and campaign help</option>
+                    <option>Find paid live performance work</option>
+                  </select>
+                  </label>
+                </div>
+
+                <label class="consent-row">
+                  <input name="trackingConsent" type="checkbox" required />
+                  I authorize Index Audio to request platform, site, license, lease, and royalty tracking information for the content I submit.
+                </label>
+                <label class="consent-row">
+                  <input name="ownershipAttestation" type="checkbox" required />
+                  I confirm I own or control the submitted work, or I can provide proof of rights, license, or lease.
+                </label>
+                <label class="consent-row">
+                  <input name="termsAccepted" type="checkbox" required />
+                  I accept the artist profile, wallet security, content upload, monetization, and platform terms.
+                </label>
+
+                <button class="primary-button" type="submit" data-ai-action="create-subscriber">Create Subscriber Profile</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Setup resolver</p>
+                  <h3>What AI Can Help With</h3>
+                </div>
+              </div>
+              <div id="resolver-card" class="resolver-card"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="basic" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Basic subscriber permissions</p>
+              <h3>Creator customer/partners can monetize, stream, and subscribe safely.</h3>
+              <p>Basic artists are not eligible for index scanning unless they upgrade, but they can sell music, receive monetization, run live video or audio-radio streams, and subscribe to 50 artist pages included with their artist subscription.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Included Artist Subs</span>
+              <strong>50</strong>
+              <small>exchange requests take up to 7 days</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Artist station</p>
+                  <h3>Basic Account Setup</h3>
+                </div>
+              </div>
+              <form id="basic-form" class="stacked-form" data-ai-section="basic-artist-permissions">
+                <div class="form-grid">
+                  <label>
+                    Account model
+                    <select name="accountModel" aria-label="Basic account model">
+                      <option>Creator customer/partner</option>
+                      <option>Artist merchant-capable customer</option>
+                    </select>
+                  </label>
+                  <label>
+                    Artist subscription price
+                    <input name="artistSubscriptionPrice" type="number" min="0" step="0.99" value="4.99" aria-label="Artist subscription price" />
+                  </label>
+                  <label>
+                    Stream station name
+                    <input name="stationName" required aria-label="Stream station name" placeholder="Nova Blue Radio" />
+                  </label>
+                  <label>
+                    Profile audience
+                    <select name="audience" aria-label="Profile audience">
+                      <option>18+ only</option>
+                      <option>Available under 18</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label class="consent-row">
+                  <input name="acceptPlatformSubscribers" type="checkbox" required />
+                  I accept platform subscribers as subscribers and understand my 50 included artist subscriptions are protected by anti-abuse exchange rules.
+                </label>
+                <label class="consent-row">
+                  <input name="captchaEnabled" type="checkbox" required />
+                  I agree to CAPTCHA-style verification and fraud checks before subscription, exchange, streaming, or monetization actions.
+                </label>
+                <label class="consent-row">
+                  <input name="minorSafeTerms" type="checkbox" required />
+                  If I make content available to users under 18, I agree to no profanity, no explicit violent content, no nudity, and no promotion of drugs, narcotics, prostitution, or sexual solicitation.
+                </label>
+                <label class="consent-row">
+                  <input name="adultTerms" type="checkbox" required />
+                  For 18+ content, I agree to no pornography, no full nudity, no repeated sexually explicit streaming, no sexual props/toys, and no implication or solicitation of sex.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="update-basic-permissions">Save Basic Permissions</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Secure features</p>
+                  <h3>Basic Artist Access</h3>
+                </div>
+              </div>
+              <div class="checklist">
+                <label><input type="checkbox" checked /> Sell music and receive monetization</label>
+                <label><input type="checkbox" checked /> Live video streaming access</label>
+                <label><input type="checkbox" checked /> Live audio-radio station link</label>
+                <label><input type="checkbox" checked /> Stream subscribed artists on station</label>
+                <label><input type="checkbox" /> Index scanning requires upgrade</label>
+                <label><input type="checkbox" /> CAPTCHA and fraud checks required</label>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Capture studio</p>
+                  <h3>Camera and Mic Check</h3>
+                </div>
+                <span id="capture-status" class="status pending">Not Started</span>
+              </div>
+              <div class="capture-layout">
+                <div class="capture-preview">
+                  <video id="capture-preview" autoplay playsinline muted></video>
+                  <div id="capture-placeholder" class="capture-placeholder">
+                    <strong>Local Preview</strong>
+                    <span>Start camera to test artist video and microphone access before building the live room.</span>
+                  </div>
+                </div>
+                <form id="capture-form" class="stacked-form" data-ai-section="stream-capture-studio">
+                  <div class="form-grid">
+                    <label>
+                      Camera
+                      <select id="camera-select" name="cameraDevice" aria-label="Camera device">
+                        <option value="">Default camera</option>
+                      </select>
+                    </label>
+                    <label>
+                      Microphone
+                      <select id="mic-select" name="micDevice" aria-label="Microphone device">
+                        <option value="">Default microphone</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="capture-actions">
+                    <button id="start-capture" class="primary-button" type="button">Start Camera</button>
+                    <button id="toggle-camera" class="secondary-button" type="button" disabled>Camera Off</button>
+                    <button id="toggle-mic" class="secondary-button" type="button" disabled>Mic Off</button>
+                    <button id="stop-capture" class="ghost-button" type="button" disabled>Stop</button>
+                  </div>
+                  <div id="capture-readout" class="capture-readout">
+                    Camera and microphone are local only. Nothing is uploaded, streamed, recorded, or saved.
+                  </div>
+                </form>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Streaming path</p>
+                  <h3>Next Layer</h3>
+                </div>
+              </div>
+              <div class="plugin-list">
+                <div><strong>Capture</strong><span>Browser camera and mic permission, device selection, preview, mute, and stop controls.</span></div>
+                <div><strong>WebRTC</strong><span>Live room transport for low-delay artist sessions, Q&A, and collaboration once capture is stable.</span></div>
+                <div><strong>HLS</strong><span>Broadcast and replay delivery after the app can package approved live output.</span></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Artist subscriptions</p>
+                  <h3>Included 50 Artist Pages</h3>
+                </div>
+              </div>
+              <form id="subscription-exchange-form" class="stacked-form" data-ai-section="artist-subscription-exchange">
+                <div class="form-grid">
+                  <label>
+                    Current artist page
+                    <input name="fromArtist" required placeholder="Artist to remove" />
+                  </label>
+                  <label>
+                    Requested artist page
+                    <input name="toArtist" required placeholder="Artist to add" />
+                  </label>
+                </div>
+                <button class="secondary-button" type="submit" data-ai-action="request-subscription-exchange">Request 7-Day Exchange</button>
+              </form>
+              <div id="basic-summary" class="match-list" data-ai-section="basic-artist-summary"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Content terms</p>
+                  <h3>Age Rules</h3>
+                </div>
+              </div>
+              <div class="plugin-list">
+                <div><strong>Under 18 available</strong><span>No profanity, nudity, explicit violence, drug promotion, narcotic sales, prostitution, or sexual solicitation.</span></div>
+                <div><strong>18+ profiles</strong><span>No pornography, full nudity, repeated sexually explicit streams, sexual props/toys, or sex solicitation.</span></div>
+                <div><strong>Under 18 artists</strong><span>Held to the under-18-safe standard across profile, streams, artwork, and music presentation.</span></div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="fans" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Fan and spectator entry</p>
+              <h3>Fan signup opens public content. Artist access is a separate Bitcoin trade.</h3>
+              <p>Fans can create a basic profile and view artist content marked public. To subscribe to an artist, the fan buys platform Bitcoin and trades it for that artist's Bitcoin access record.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Fan Access</span>
+              <strong>Public</strong>
+              <small>subscription requires artist Bitcoin trade</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Experience profile</p>
+                  <h3>How does the fan wish to be entertained?</h3>
+                </div>
+              </div>
+              <form id="fan-form" class="stacked-form" data-ai-section="fan-spectator-profile">
+                <div class="form-grid">
+                  <label>
+                    Fan display name
+                    <input name="displayName" required aria-label="Fan display name" placeholder="Sky Listener" />
+                  </label>
+                  <label>
+                    Contact email
+                    <input name="email" type="email" required aria-label="Fan contact email" placeholder="fan@example.com" />
+                  </label>
+                  <label>
+                    Username
+                    <input name="username" required aria-label="Fan username" placeholder="sky-listener" />
+                  </label>
+                  <label>
+                    Account password
+                    <input name="password" type="password" required minlength="8" aria-label="Fan account password" />
+                  </label>
+                  <label>
+                    Confirm password
+                    <input name="passwordConfirm" type="password" required minlength="8" aria-label="Confirm fan account password" />
+                  </label>
+                  <label>
+                    Financial wallet password
+                    <input name="walletPassword" type="password" required minlength="8" aria-label="Fan wallet password" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" aria-label="Confirm fan wallet password" />
+                  </label>
+                  <label>
+                    Profile picture
+                    <input name="profilePicture" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Fan profile picture" />
+                  </label>
+                  <label>
+                    Main experience expectation
+                    <select name="experience" aria-label="Fan experience expectation">
+                      <option>Watch live performances</option>
+                      <option>Listen to new music</option>
+                      <option>Join artist conversations</option>
+                      <option>Discover underground artists</option>
+                      <option>Support artists with tips</option>
+                      <option>Follow radio-style streams</option>
+                    </select>
+                  </label>
+                  <label>
+                    Search visibility
+                    <select name="visibility" aria-label="Fan profile visibility">
+                      <option>Public basic profile</option>
+                      <option>Private fan profile</option>
+                    </select>
+                  </label>
+                </div>
+
+                <fieldset class="checkbox-fieldset">
+                  <legend>Music and stream interests</legend>
+                  <div class="checkbox-grid">
+                    <label><input type="checkbox" name="genres" value="Hip-hop" /> Hip-hop</label>
+                    <label><input type="checkbox" name="genres" value="R&B" /> R&B</label>
+                    <label><input type="checkbox" name="genres" value="Gospel" /> Gospel</label>
+                    <label><input type="checkbox" name="genres" value="Afrobeats" /> Afrobeats</label>
+                    <label><input type="checkbox" name="genres" value="Pop" /> Pop</label>
+                    <label><input type="checkbox" name="genres" value="Rock" /> Rock</label>
+                    <label><input type="checkbox" name="genres" value="Country" /> Country</label>
+                    <label><input type="checkbox" name="genres" value="Electronic" /> Electronic</label>
+                    <label><input type="checkbox" name="genres" value="Talk / podcast" /> Talk / podcast</label>
+                    <label><input type="checkbox" name="genres" value="Live studio sessions" /> Live studio sessions</label>
+                  </div>
+                </fieldset>
+
+                <label>
+                  Personal entertainment note
+                  <textarea name="expectationNote" aria-label="Fan entertainment note" placeholder="Tell JVM what kind of mood, artist access, live energy, or listening experience should be matched."></textarea>
+                </label>
+
+                <label class="consent-row">
+                  <input name="searchConsent" type="checkbox" required />
+                  I agree to use my interest answers for artist search, JVM recommendations, public basic access, messages, comments, and live stream discovery.
+                </label>
+                <label class="consent-row">
+                  <input name="termsAccepted" type="checkbox" required />
+                  I accept the fan profile, wallet security, identity presence, commenting, messaging, tip, and artist-live interaction terms. I understand spectators cannot host streams or upload music.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="create-fan-profile">Create Fan Profile</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Public access</p>
+                  <h3>Fan Basics</h3>
+                </div>
+              </div>
+              <div class="checklist">
+                <label><input type="checkbox" checked /> Free public basic profile</label>
+                <label><input type="checkbox" checked /> Content marked public can be viewed after fan signup</label>
+                <label><input type="checkbox" checked /> Public search and JVM routing to artist pages</label>
+                <label><input type="checkbox" /> Subscriber content requires artist access trade</label>
+                <label><input type="checkbox" /> Platform Bitcoin purchase before artist Bitcoin trade</label>
+                <label><input type="checkbox" checked /> Public messages, comments, and public live chat access</label>
+                <label><input type="checkbox" checked /> Monetization tips routed to artist ledger</label>
+                <label><input type="checkbox" checked /> Profile picture for identity and presence</label>
+                <label><input type="checkbox" /> No spectator music uploads or self-hosted streams</label>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Artist access trade</p>
+                  <h3>Subscribe with Artist Bitcoin</h3>
+                </div>
+              </div>
+              <form id="fan-access-form" class="stacked-form" data-ai-section="fan-artist-access-trade">
+                <div class="form-grid">
+                  <label>
+                    Fan username
+                    <input name="fanUsername" required placeholder="sky-listener" />
+                  </label>
+                  <label>
+                    Artist page
+                    <input name="artistName" required placeholder="Nova Blue" />
+                  </label>
+                  <label>
+                    Platform Bitcoin purchase
+                    <input name="platformBitcoinValue" type="number" min="0" step="0.01" value="10" />
+                  </label>
+                  <label>
+                    Artist Bitcoin requested
+                    <input name="artistBitcoinValue" type="number" min="0" step="0.01" value="10" />
+                  </label>
+                  <label>
+                    Access tier
+                    <select name="accessTier" aria-label="Artist access tier">
+                      <option>Artist subscriber access</option>
+                      <option>Live room access</option>
+                      <option>Replay access</option>
+                      <option>Early music access</option>
+                    </select>
+                  </label>
+                  <label>
+                    Access window
+                    <select name="accessWindow" aria-label="Artist access window">
+                      <option>30 days</option>
+                      <option>90 days</option>
+                      <option>1 year</option>
+                      <option>Single event</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="tradeConsent" type="checkbox" required />
+                  I understand fan signup includes access to content marked public. Subscribed artist access requires platform Bitcoin purchase, artist Bitcoin trade, and platform review before private content opens.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="request-artist-access-trade">Request Artist Access Trade</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Access rule</p>
+                  <h3>Public vs Subscribed</h3>
+                </div>
+              </div>
+              <div class="plugin-list">
+                <div><strong>Public</strong><span>Marked-public songs, posts, previews, public live rooms, and basic artist page details.</span></div>
+                <div><strong>Subscribed</strong><span>Artist subscriber content, private rooms, replay access, early releases, and gated interaction.</span></div>
+                <div><strong>Trade review</strong><span>Platform Bitcoin converts into artist Bitcoin access only after wallet, fraud, and compliance checks.</span></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">JVM routing</p>
+                  <h3>Personal Artist Matches</h3>
+                </div>
+              </div>
+              <div id="fan-match-list" class="match-list" data-ai-section="fan-artist-matches"></div>
+              <div id="fan-access-ledger" class="match-list" data-ai-section="fan-artist-access-ledger"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Direct artist support</p>
+                  <h3>Free Tip Ledger</h3>
+                </div>
+              </div>
+              <form id="fan-tip-form" class="stacked-form" data-ai-section="fan-tip-ledger">
+                <label>
+                  Artist page
+                  <input name="artistName" required placeholder="Nova Blue" />
+                </label>
+                <label>
+                  Free tip value
+                  <input name="tipValue" type="number" min="0" step="0.01" value="5" />
+                </label>
+                <label>
+                  Artist value boost
+                  <input name="coinValue" type="number" min="0" step="0.01" value="5" />
+                </label>
+                <label>
+                  Support path
+                  <select name="supportPath" aria-label="Fan support path">
+                    <option value="tip">Tip cash-out path</option>
+                    <option value="investment">Artist investment/perks path</option>
+                  </select>
+                </label>
+                <label>
+                  Platform tip fee %
+                  <input name="cashOutRate" type="number" min="0" max="100" step="0.01" value="15" />
+                </label>
+                <button class="secondary-button" type="submit" data-ai-action="record-fan-tip">Record Free Tip</button>
+              </form>
+              <div id="fan-tip-ledger" class="match-list"></div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Cloud space lease</p>
+                  <h3>Artist Live Page Storage</h3>
+                </div>
+              </div>
+              <form id="cloud-form" class="stacked-form" data-ai-section="cloud-space-lease">
+                <div class="form-grid">
+                  <label>
+                    Buyer username
+                    <input name="username" required placeholder="nova-blue" />
+                  </label>
+                  <label>
+                    Email
+                    <input name="email" type="email" required placeholder="cloud@example.com" />
+                  </label>
+                  <label>
+                    Cloud wallet password
+                    <input name="walletPassword" type="password" required minlength="8" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" />
+                  </label>
+                  <label>
+                    Artist page
+                    <input name="artistName" required placeholder="Nova Blue" />
+                  </label>
+                  <label>
+                    Space package
+                    <select name="spacePackage">
+                      <option>Starter live page cloud - 100GB</option>
+                      <option>Growth live page cloud - 500GB</option>
+                      <option>Station cloud - 1TB</option>
+                      <option>Platform lease block - custom review</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="termsAccepted" type="checkbox" required />
+                  I accept cloud space lease terms for artist live pages, uploads, stream replays, and fan viewing access.
+                </label>
+                <button class="secondary-button" type="submit" data-ai-action="purchase-cloud-space">Record Cloud Lease</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Cloud server</p>
+                  <h3>Lease Records</h3>
+                </div>
+              </div>
+              <div id="cloud-lease-list" class="match-list" data-ai-section="cloud-lease-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="upload" class="view" aria-labelledby="view-title">
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Content intake</p>
+                  <h3>Submit Music and Ownership Proof</h3>
+                </div>
+              </div>
+              <form id="content-form" class="stacked-form" data-ai-section="content-upload">
+                <div class="form-grid">
+                  <label>
+                    Track title
+                    <input name="title" required aria-label="Track title" placeholder="Moment of Light" />
+                  </label>
+                  <label>
+                    Existing ISRC optional
+                    <input name="isrc" aria-label="Existing ISRC code" placeholder="USABC2600001" />
+                  </label>
+                  <label>
+                    Existing UPC optional
+                    <input name="upc" aria-label="Existing UPC optional" placeholder="Leave blank if unavailable" />
+                  </label>
+                  <label>
+                    Platform link request
+                    <select name="linkRequest" aria-label="Platform ISRC or UPC link request">
+                      <option value="none">No paid link request</option>
+                      <option value="isrc">Link platform ISRC - $1.50</option>
+                      <option value="upc">Link platform UPC - $1.00</option>
+                      <option value="both">Link ISRC + UPC - $2.50</option>
+                    </select>
+                  </label>
+                  <label>
+                    Sample usage
+                    <select name="sampleUse" aria-label="Sample usage">
+                      <option>No samples used</option>
+                      <option>Licensed sample</option>
+                      <option>Public use / public domain claim</option>
+                      <option>Unclear sample needs review</option>
+                    </select>
+                  </label>
+                  <label>
+                    Release type
+                    <select name="releaseType" aria-label="Release type">
+                      <option>Single</option>
+                      <option>EP</option>
+                      <option>Album</option>
+                      <option>Lease upload</option>
+                      <option>Licensed release</option>
+                    </select>
+                  </label>
+                  <label>
+                    Artist page content type
+                    <select name="contentKind" aria-label="Artist page content type">
+                      <option>Recent artist page post</option>
+                      <option>Live stream</option>
+                      <option>Stream replay</option>
+                      <option>Music upload</option>
+                      <option>Short visual update</option>
+                    </select>
+                  </label>
+                  <label>
+                    Page access setting
+                    <select name="accessSetting" aria-label="Public or private access setting">
+                      <option value="public">Public</option>
+                      <option value="private">Private / artist subscriber</option>
+                    </select>
+                  </label>
+                  <label>
+                    Audio file
+                    <input name="audioFile" type="file" multiple accept=".wav,.mp3,.mp4,audio/wav,audio/mpeg,audio/mp4,video/mp4" aria-label="Audio or MP4 sound file upload" />
+                  </label>
+                  <label>
+                    Artwork or visual
+                    <input name="visualFile" type="file" multiple accept="image/jpeg,image/png,image/webp,video/mp4,video/*" aria-label="Image or audiovisual upload" />
+                  </label>
+                  <label>
+                    Copyright proof
+                    <input name="proofFile" type="file" multiple accept="image/jpeg,image/png,.pdf,.doc,.docx,.txt" aria-label="Copyright proof upload" />
+                  </label>
+                  <label>
+                    Document file
+                    <input name="documentFile" type="file" multiple accept=".pdf,.doc,.docx,.txt,.rtf" aria-label="Document file upload" />
+                  </label>
+                  <label>
+                    JPEG image
+                    <input name="jpegFile" type="file" multiple accept="image/jpeg,.jpg,.jpeg" aria-label="JPEG image upload" />
+                  </label>
+                  <label>
+                    Video file
+                    <input name="videoFile" type="file" multiple accept="video/mp4,video/quicktime,video/*" aria-label="Video upload" />
+                  </label>
+                  <label>
+                    Split / ownership note
+                    <input name="splitNote" aria-label="Split or ownership note" placeholder="100% owned, 50/50 split, leased beat" />
+                  </label>
+                </div>
+                <label>
+                  Platform links to track
+                  <textarea name="platformLinks" aria-label="Platform links" placeholder="Spotify, Apple Music, YouTube, SoundCloud, distributor links"></textarea>
+                </label>
+                <label>
+                  Sample explanation for review
+                  <textarea name="sampleExplanation" aria-label="Sample explanation" placeholder="Describe any sample source, license, public use basis, or why it should be cleared for ISRC linking."></textarea>
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="submit-content">Add to Index</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Proof status</p>
+                  <h3>Before Tracking Starts</h3>
+                </div>
+              </div>
+              <div class="checklist">
+                <label><input type="checkbox" checked /> Artist pages serve recent content, not permanent libraries</label>
+                <label><input type="checkbox" checked /> Public/private can be set for posts, replays, and live streams</label>
+                <label><input type="checkbox" checked /> Unpinned content expires 6 months from created/refreshed date</label>
+                <label><input type="checkbox" /> Up to 3 pinned posts can stay for 2 years</label>
+                <label><input type="checkbox" checked /> ISRC accepted when available</label>
+                <label><input type="checkbox" checked /> UPC is optional at entry</label>
+                <label><input type="checkbox" /> $1.50 platform ISRC link after review</label>
+                <label><input type="checkbox" /> $1.00 platform UPC link after review</label>
+                <label><input type="checkbox" /> Proof verified by JVM/admin</label>
+                <label><input type="checkbox" /> Audio fingerprint and visual watermark scan passed</label>
+                <label><input type="checkbox" /> Sample review completed when needed</label>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="index" class="view" aria-labelledby="view-title">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-label">Index screen</p>
+                <h3>Submitted Content</h3>
+              </div>
+              <span id="track-count" class="stat-pill">0 items</span>
+            </div>
+            <div id="track-list" class="track-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-label">Royalty and enforcement</p>
+                <h3>Tracking Requests</h3>
+              </div>
+              <button id="add-tracking-request" class="secondary-button" type="button">Log Tracking Request</button>
+            </div>
+            <div class="ledger-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Content</th>
+                    <th>Request</th>
+                    <th>Status</th>
+                    <th>Proof</th>
+                  </tr>
+                </thead>
+                <tbody id="ledger-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="launch" class="view" aria-labelledby="view-title">
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Launch dashboard</p>
+                  <h3>Campaign Builder</h3>
+                </div>
+              </div>
+              <div class="tool-grid">
+                <button class="tool-card" data-tool="marketing" type="button">
+                  <span>Marketing Strategy</span>
+                  <small>Build a 14-day release push around the artist's goal.</small>
+                </button>
+                <button class="tool-card" data-tool="artwork" type="button">
+                  <span>Artwork Direction</span>
+                  <small>Generate a creative brief for cover art and visuals.</small>
+                </button>
+                <button class="tool-card" data-tool="fan" type="button">
+                  <span>Fan Subscription</span>
+                  <small>Plan supporter tiers, perks, and first subscriber offer.</small>
+                </button>
+                <button class="tool-card" data-tool="rights" type="button">
+                  <span>Rights Checklist</span>
+                  <small>Resolve missing proof, ISRC, UPC, lease, and license gaps.</small>
+                </button>
+                <button class="tool-card" data-tool="production" type="button">
+                  <span>Production Workspace</span>
+                  <small>Organize versions, collaborators, metadata, files, and approvals.</small>
+                </button>
+                <button class="tool-card" data-tool="distribution" type="button">
+                  <span>Distribution Desk</span>
+                  <small>Prepare smart links, EPK, release schedule, and pitch tracking.</small>
+                </button>
+                <button class="tool-card" data-tool="live" type="button">
+                  <span>Collaboration Lives</span>
+                  <small>Plan live performances, creative think tanks, and subscriber rooms.</small>
+                </button>
+                <button class="tool-card" data-tool="money" type="button">
+                  <span>Money Tools</span>
+                  <small>Set up tips, paid lives, funding goals, and subscriber tiers.</small>
+                </button>
+              </div>
+              <div id="tool-output" class="tool-output" data-ai-section="launch-ai-helper"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Readiness</p>
+                  <h3>Launch Score</h3>
+                </div>
+              </div>
+              <div class="score-ring">
+                <strong id="launch-score">0%</strong>
+                <span>ready</span>
+              </div>
+              <div id="launch-gaps" class="gap-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="jvm-time" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">JVM internal time</p>
+              <h3>Platform time controls calendar, lifecycle, and trade review dates.</h3>
+              <p>The server owns event timestamps in runtime mode. Local mode uses the same JVM clock rules so content deletion, pinned posts, Bitcoin access trades, and review windows are not scattered across device clocks.</p>
+            </div>
+            <div class="hero-meter">
+              <span id="jvm-timezone-label">America/New_York</span>
+              <strong id="jvm-clock-label">--:--</strong>
+              <small id="jvm-date-label">Calendar date pending</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Internal clock</p>
+                  <h3>Set JVM Time</h3>
+                </div>
+                <span id="jvm-source" class="stat-pill">Internal</span>
+              </div>
+              <form id="jvm-time-form" class="stacked-form" data-ai-section="jvm-internal-time">
+                <div class="form-grid">
+                  <label>
+                    Time zone
+                    <select name="timeZone" aria-label="JVM time zone">
+                      <option>America/New_York</option>
+                      <option>America/Chicago</option>
+                      <option>America/Denver</option>
+                      <option>America/Los_Angeles</option>
+                      <option>UTC</option>
+                    </select>
+                  </label>
+                  <label>
+                    Calendar date
+                    <input name="calendarDate" type="date" required />
+                  </label>
+                  <label>
+                    Clock time
+                    <input name="clockTime" type="time" step="60" required />
+                  </label>
+                  <label>
+                    Calendar label
+                    <input name="calendarLabel" placeholder="Artist access review window" />
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="timeAuthority" type="checkbox" required />
+                  I understand this JVM time controls internal review dates, artist page expiration, pinned-post retention, and Bitcoin access trade timestamps.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="set-jvm-time">Set JVM Internal Time</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Calendar</p>
+                  <h3>Time Rules</h3>
+                </div>
+              </div>
+              <div id="jvm-time-summary" class="metric-list"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-label">Internal calendar</p>
+                <h3>Calendar Ledger</h3>
+              </div>
+            </div>
+            <div id="jvm-calendar-list" class="match-list" data-ai-section="jvm-calendar-ledger"></div>
+          </section>
+        </section>
+
+        <section id="billing" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">PayPal payment capture</p>
+              <h3>Card payments fund access and the closed ARHC coin ledger.</h3>
+              <p>Artist and business payments are annual. Fan artist-access subscriptions are month to month. Confirmed PayPal payments can credit platform Bitcoin or artist Bitcoin access inside the closed ARHC application market.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Processor</span>
+              <strong>PayPal</strong>
+              <small>orders, capture, webhooks</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Checkout order</p>
+                  <h3>Create Payment Capture</h3>
+                </div>
+              </div>
+              <form id="billing-form" class="stacked-form" data-ai-section="paypal-payment-capture">
+                <div class="form-grid">
+                  <label>
+                    Payer type
+                    <select name="payerType" aria-label="Payer type">
+                      <option value="artist">Artist annual</option>
+                      <option value="business">Business annual</option>
+                      <option value="fan">Fan month to month</option>
+                    </select>
+                  </label>
+                  <label>
+                    Payer username
+                    <input name="payerUsername" required placeholder="nova-blue" />
+                  </label>
+                  <label>
+                    Billing plan
+                    <select name="plan" aria-label="Billing plan">
+                      <option value="artist-platform">Artist Platform Access - $45/year</option>
+                      <option value="artist-protection">Artist Index Protection - $90/year</option>
+                      <option value="business-partner">Business Partner Platform - $4000/year</option>
+                      <option value="fan-artist-access">Fan Artist Access - month to month</option>
+                      <option value="promotion-network">Promotion Network - $5.99/month</option>
+                      <option value="platform-bitcoin">Platform Bitcoin Purchase</option>
+                    </select>
+                  </label>
+                  <label>
+                    Billing cycle
+                    <select name="billingCycle" aria-label="Billing cycle">
+                      <option value="yearly">Yearly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="one-time">One-time</option>
+                    </select>
+                  </label>
+                  <label>
+                    Amount
+                    <input name="amount" type="number" min="0" step="0.01" value="45" />
+                  </label>
+                  <label>
+                    Closed-market purpose
+                    <select name="marketPurpose" aria-label="Closed market purpose">
+                      <option value="platform-access">Platform access</option>
+                      <option value="platform-bitcoin-credit">Credit platform Bitcoin</option>
+                      <option value="artist-bitcoin-access">Trade toward artist Bitcoin access</option>
+                      <option value="business-roster">Business roster access</option>
+                    </select>
+                  </label>
+                  <label>
+                    Wallet status
+                    <select name="walletStatus" aria-label="Wallet status">
+                      <option>Wallet configured</option>
+                      <option>Wallet pending setup</option>
+                      <option>Wallet review required</option>
+                    </select>
+                  </label>
+                  <label>
+                    Contact email
+                    <input name="contactEmail" type="email" required placeholder="billing@example.com" />
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="billingConsent" type="checkbox" required />
+                  I understand PayPal handles card/payment capture. ARHC records payment state, wallet verification, and closed-market credit eligibility only after confirmed capture or verified webhook.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="create-paypal-order">Create PayPal Order</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Capture rules</p>
+                  <h3>Billing Assumptions</h3>
+                </div>
+              </div>
+              <div class="plugin-list">
+                <div><strong>Artist</strong><span>Annual card payment through PayPal for platform access or protection.</span></div>
+                <div><strong>Business</strong><span>Annual card payment through PayPal for company partner platform and roster seats.</span></div>
+                <div><strong>Fan</strong><span>Month-to-month artist access can be added after base order capture is stable.</span></div>
+                <div><strong>Closed market</strong><span>Confirmed payments can credit internal platform Bitcoin or artist Bitcoin access inside ARHC only.</span></div>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-label">Payment ledger</p>
+                <h3>PayPal Orders and Wallet Verification</h3>
+              </div>
+              <span id="billing-count" class="stat-pill">0 payments</span>
+            </div>
+            <div id="billing-ledger" class="match-list" data-ai-section="paypal-payment-ledger"></div>
+          </section>
+        </section>
+
+        <section id="distribution" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Distribution add-on</p>
+              <h3>Prepare legitimate releases before they move to streaming platforms.</h3>
+              <p>Distribution stays separate from the site subscription. Artists must show copyright, license, lease, ownership proof, ISRC, and scan readiness before Index Audio generates a distribution license.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Distribution Desk</span>
+              <strong>$90</strong>
+              <small>per year or $10/month</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Release transfer system</p>
+                  <h3>Distribution Intake</h3>
+                </div>
+              </div>
+              <form id="distribution-form" class="stacked-form" data-ai-section="distribution-intake">
+                <div class="plan-grid" role="radiogroup" aria-label="Distribution plan">
+                  <label class="plan-card">
+                    <input type="radio" name="billing" value="yearly" checked />
+                    <span>Distribution Annual</span>
+                    <strong>$90/year</strong>
+                    <small>Best for artists preparing multiple releases and long-term royalty tracking.</small>
+                  </label>
+                  <label class="plan-card">
+                    <input type="radio" name="billing" value="monthly" />
+                    <span>Distribution Monthly</span>
+                    <strong>$10/month</strong>
+                    <small>Useful when an artist needs help for one release cycle.</small>
+                  </label>
+                </div>
+
+                <div class="form-grid">
+                  <label>
+                    Release title
+                    <input name="releaseTitle" required aria-label="Release title" placeholder="Moment of Light" />
+                  </label>
+                  <label>
+                    Artist name
+                    <input name="artistName" required aria-label="Distribution artist name" placeholder="Nova Blue" />
+                  </label>
+                  <label>
+                    ISRC
+                    <input name="isrc" required aria-label="Distribution ISRC" placeholder="USABC2600001" />
+                  </label>
+                  <label>
+                    UPC optional
+                    <input name="upc" aria-label="Distribution UPC optional" placeholder="Optional until release product is finalized" />
+                  </label>
+                  <label>
+                    Rights basis
+                    <select name="rightsBasis" aria-label="Distribution rights basis">
+                      <option>Copyright ownership</option>
+                      <option>Licensed master</option>
+                      <option>Leased audio / beat</option>
+                      <option>Split ownership</option>
+                    </select>
+                  </label>
+                  <label>
+                    Target platforms
+                    <input name="targetPlatforms" required aria-label="Target platforms" placeholder="Spotify, Apple Music, YouTube Music, Tidal" />
+                  </label>
+                  <label>
+                    Audio master
+                    <input name="audioFile" type="file" multiple accept=".wav,.mp3,.mp4,audio/wav,audio/mpeg,audio/mp4,video/mp4" aria-label="Distribution audio master" />
+                  </label>
+                  <label>
+                    Cover art
+                    <input name="artworkFile" type="file" multiple accept="image/jpeg,image/png,image/webp" aria-label="Distribution cover art" />
+                  </label>
+                  <label>
+                    Copyright, license, or lease proof
+                    <input name="proofFile" type="file" multiple accept="image/jpeg,image/png,.pdf,.doc,.docx,.txt" aria-label="Distribution proof file" />
+                  </label>
+                  <label>
+                    Split sheet optional
+                    <input name="splitFile" type="file" multiple accept="image/jpeg,image/png,.pdf,.doc,.docx,.txt" aria-label="Split sheet file" />
+                  </label>
+                  <label>
+                    Video asset
+                    <input name="videoFile" type="file" multiple accept="video/mp4,video/quicktime,video/*" aria-label="Distribution video file" />
+                  </label>
+                </div>
+
+                <label class="consent-row">
+                  <input name="distributionAuthority" type="checkbox" required />
+                  I authorize Index Audio to create a distribution license record and prepare transfer to streaming platforms after rights review.
+                </label>
+                <label class="consent-row">
+                  <input name="scanConsent" type="checkbox" required />
+                  I authorize ISRC lookup, audio fingerprint scanning, and copyright infringement review before distribution.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="create-distribution-release">Submit for Distribution Review</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Credibility gate</p>
+                  <h3>Before Transfer</h3>
+                </div>
+              </div>
+              <div class="checklist">
+                <label><input type="checkbox" checked /> Distribution plan selected</label>
+                <label><input type="checkbox" checked /> ISRC required for release review</label>
+                <label><input type="checkbox" /> Copyright, license, or lease proof verified</label>
+                <label><input type="checkbox" /> Audio fingerprint scan cleared</label>
+                <label><input type="checkbox" /> Distribution license generated</label>
+                <label><input type="checkbox" /> Platform transfer approved</label>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Release queue</p>
+                  <h3>Distribution Releases</h3>
+                </div>
+                <button id="run-distribution-review" class="secondary-button" type="button">Run Rights Scan</button>
+              </div>
+              <div id="distribution-list" class="match-list" data-ai-section="distribution-release-queue"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Generated license</p>
+                  <h3>Distribution Authority</h3>
+                </div>
+              </div>
+              <div id="distribution-license" class="support-answer" data-ai-section="distribution-license-record"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="promote" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Promotion network add-on</p>
+              <h3>Match local artists with paid performance opportunities.</h3>
+              <p>Artists and promoters can subscribe for $5.99/month, enable location-based matching, and receive alerts when a paid show fits genre, distance, audience, and budget.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Promotion Tools</span>
+              <strong>$5.99</strong>
+              <small>per month</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Standalone module</p>
+                  <h3>Local Performance Signup</h3>
+                </div>
+              </div>
+              <form id="promotion-form" class="stacked-form" data-ai-section="promotion-network-signup">
+                <div class="form-grid">
+                  <label>
+                    Account type
+                    <select name="role" aria-label="Promotion account type">
+                      <option>Artist</option>
+                      <option>Promoter</option>
+                      <option>Venue</option>
+                    </select>
+                  </label>
+                  <label>
+                    Name
+                    <input name="name" required aria-label="Promotion profile name" placeholder="Nova Blue or Eastside Events" />
+                  </label>
+                  <label>
+                    Email
+                    <input name="email" type="email" required aria-label="Promotion profile email" placeholder="booking@example.com" />
+                  </label>
+                  <label>
+                    Username
+                    <input name="username" required aria-label="Promotion username" placeholder="eastside-events" />
+                  </label>
+                  <label>
+                    Account password
+                    <input name="password" type="password" required minlength="8" aria-label="Promotion account password" />
+                  </label>
+                  <label>
+                    Confirm password
+                    <input name="passwordConfirm" type="password" required minlength="8" aria-label="Confirm promotion account password" />
+                  </label>
+                  <label>
+                    Financial wallet password
+                    <input name="walletPassword" type="password" required minlength="8" aria-label="Promotion wallet password" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" aria-label="Confirm promotion wallet password" />
+                  </label>
+                  <label>
+                    City
+                    <input name="city" required aria-label="City" placeholder="Atlanta" />
+                  </label>
+                  <label>
+                    Search radius miles
+                    <input name="radius" type="number" min="5" max="250" value="50" aria-label="Search radius miles" />
+                  </label>
+                  <label>
+                    Genre / audience
+                    <input name="genre" required aria-label="Genre or audience" placeholder="R&B, hip-hop, gospel brunch" />
+                  </label>
+                  <label>
+                    Minimum pay or budget
+                    <input name="budget" type="number" min="0" step="25" value="250" aria-label="Minimum pay or budget" />
+                  </label>
+                  <label>
+                    Fan count
+                    <input name="fanCount" type="number" min="0" step="1" value="500" aria-label="Artist fan count" />
+                  </label>
+                  <label>
+                    Average views
+                    <input name="averageViews" type="number" min="0" step="1" value="1200" aria-label="Artist average views" />
+                  </label>
+                  <label>
+                    Estimated stage draw
+                    <input name="stageDraw" type="number" min="0" step="1" value="75" aria-label="Estimated stage draw" />
+                  </label>
+                  <label>
+                    Label / management readiness
+                    <select name="businessReadiness" aria-label="Label or management readiness">
+                      <option>Open to shows only</option>
+                      <option>Open to artist collaboration</option>
+                      <option>Seeking management</option>
+                      <option>Seeking label or contract review</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="gpsConsent" type="checkbox" required />
+                  I agree to use location-based matching for local paid performance searches and alerts.
+                </label>
+                <label class="consent-row">
+                  <input name="termsAccepted" type="checkbox" required />
+                  I accept profile, wallet security, booking, payment, and performance search terms.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="create-promotion-profile">Activate Promotion Search</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Live gig alert</p>
+                  <h3>Create Paid Opportunity</h3>
+                </div>
+              </div>
+              <form id="gig-form" class="stacked-form" data-ai-section="paid-performance-opportunity">
+                <label>
+                  Event title
+                  <input name="title" required placeholder="Friday Night R&B Showcase" />
+                </label>
+                <label>
+                  Location
+                  <input name="location" required placeholder="Atlanta, GA" />
+                </label>
+                <label>
+                  Genre wanted
+                  <input name="genre" required placeholder="R&B" />
+                </label>
+                <label>
+                  Pay offered
+                  <input name="pay" type="number" min="0" step="25" value="350" />
+                </label>
+                <label>
+                  Event type
+                  <select name="eventType" aria-label="Event type">
+                    <option>Showcase</option>
+                    <option>Festival</option>
+                    <option>Club night</option>
+                    <option>Brand event</option>
+                    <option>Church / community event</option>
+                    <option>Private booking</option>
+                  </select>
+                </label>
+                <label>
+                  Expected audience
+                  <input name="expectedAudience" type="number" min="0" step="25" value="150" />
+                </label>
+                <label>
+                  Minimum artist fan count
+                  <input name="minFanCount" type="number" min="0" step="1" value="100" />
+                </label>
+                <label>
+                  Minimum average views
+                  <input name="minAverageViews" type="number" min="0" step="1" value="500" />
+                </label>
+                <button class="secondary-button" type="submit" data-ai-action="create-paid-gig">Post Gig</button>
+              </form>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Search engine</p>
+                  <h3>Local Matches</h3>
+                </div>
+                <button id="run-promotion-match" class="secondary-button" type="button">Run Match</button>
+              </div>
+              <div id="promotion-matches" class="match-list" data-ai-section="local-performance-matches"></div>
+              <div id="artist-collab-matches" class="match-list" data-ai-section="artist-collaboration-matches"></div>
+              <div id="artist-growth-events" class="match-list" data-ai-section="artist-growth-events"></div>
+              <div id="artist-business-leads" class="match-list" data-ai-section="artist-business-leads"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Module structure</p>
+                  <h3>Future API Pieces</h3>
+                </div>
+              </div>
+              <div class="plugin-list">
+                <div><strong>Profiles API</strong><span>artist, promoter, venue, manager, label, genre, fan count, average views</span></div>
+                <div><strong>JVM Show Match</strong><span>show criteria, stage draw, audience fit, pay, route to booking</span></div>
+                <div><strong>Collab Match</strong><span>artist-to-artist fit for songs, lives, co-writing, and fan-base growth</span></div>
+                <div><strong>Manager/Label Lead</strong><span>contract readiness, roster fit, deal proposals, admin review</span></div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="bitcoin" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Bitcoin Tree package</p>
+              <h3>Model fan support, NFT drops, and Bitcoin-based marketing plans.</h3>
+              <p>This in-house package lets artists create a wallet record, build a support tree, plan NFT drops, and simulate fan vesting rewards without custodying real funds or promising investment returns.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Bitcoin Tree</span>
+              <strong>Local</strong>
+              <small>simulation only</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Artist wallet</p>
+                  <h3>Create Bitcoin Tree</h3>
+                </div>
+              </div>
+              <form id="bitcoin-form" class="stacked-form" data-ai-section="bitcoin-tree-setup">
+                <div class="form-grid">
+                  <label>
+                    Artist name
+                    <input name="artistName" required aria-label="Bitcoin artist name" placeholder="Nova Blue" />
+                  </label>
+                  <label>
+                    Wallet label
+                    <input name="walletLabel" required aria-label="Wallet label" placeholder="Nova Blue treasury wallet" />
+                  </label>
+                  <label>
+                    Financial wallet password
+                    <input name="walletPassword" type="password" required minlength="8" aria-label="Bitcoin Tree wallet password" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" aria-label="Confirm Bitcoin Tree wallet password" />
+                  </label>
+                  <label>
+                    Wallet address placeholder
+                    <input name="walletAddress" aria-label="Wallet address placeholder" placeholder="bc1... internal record only" />
+                  </label>
+                  <label>
+                    Package type
+                    <select name="packageType" aria-label="Bitcoin package type">
+                      <option>Fan vesting tree</option>
+                      <option>NFT drop campaign</option>
+                      <option>Coin-based marketing plan</option>
+                      <option>Hybrid support tree</option>
+                    </select>
+                  </label>
+                  <label>
+                    Root coin purchase value
+                    <input name="rootCoinPurchaseValue" type="number" min="0" step="0.01" value="100" aria-label="Root coin purchase value" />
+                  </label>
+                  <label>
+                    Chain/block source
+                    <input name="chainBlockSource" required aria-label="Chain block source" placeholder="AWOBE root block / source outlet" />
+                  </label>
+                  <label>
+                    Artist branch coin symbol
+                    <input name="branchCoinSymbol" required aria-label="Artist branch coin symbol" placeholder="NOVA-SUB" />
+                  </label>
+                  <label>
+                    Branch coin supply
+                    <input name="branchCoinSupply" type="number" min="1" step="1" value="1000" aria-label="Branch coin supply" />
+                  </label>
+                  <label>
+                    Base value multiplier
+                    <input name="baseValueMultiplier" type="number" min="0.01" step="0.01" value="1" aria-label="Base value multiplier" />
+                  </label>
+                  <label>
+                    Support goal
+                    <input name="supportGoal" type="number" min="0" step="25" value="1000" aria-label="Support goal" />
+                  </label>
+                  <label>
+                    Vesting period months
+                    <input name="vestingMonths" type="number" min="1" max="60" value="12" aria-label="Vesting period months" />
+                  </label>
+                  <label>
+                    Fan reward pool %
+                    <input name="fanRewardPercent" type="number" min="0" max="50" value="10" aria-label="Fan reward pool percent" />
+                  </label>
+                  <label>
+                    Drop asset
+                    <input name="dropAsset" type="file" accept="image/*,audio/*,video/*" aria-label="NFT or campaign asset" />
+                  </label>
+                </div>
+                <label>
+                  Campaign description
+                  <textarea name="campaignDescription" aria-label="Bitcoin campaign description" placeholder="Supporters help fund the release campaign and receive access, perks, badges, or revenue-share-style rewards if legally approved."></textarea>
+                </label>
+                <label class="consent-row">
+                  <input name="riskConsent" type="checkbox" required />
+                  I understand this is an internal planning record, not a promise of income, investment return, token value, or financial advice.
+                </label>
+                <label class="consent-row">
+                  <input name="legalReview" type="checkbox" required />
+                  I understand real fan income, vesting, token, NFT, or revenue-share offers require legal, tax, and compliance review before launch.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="create-bitcoin-tree">Create Bitcoin Tree</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Guardrails</p>
+                  <h3>Before Real Deployment</h3>
+                </div>
+              </div>
+              <div class="checklist">
+                <label><input type="checkbox" checked /> Wallet record created in-house</label>
+                <label><input type="checkbox" checked /> Branch coin base value rooted to root coin purchase</label>
+                <label><input type="checkbox" checked /> Chain/block source recorded before branch activation</label>
+                <label><input type="checkbox" /> No custody of artist or fan funds</label>
+                <label><input type="checkbox" /> Securities/legal review complete</label>
+                <label><input type="checkbox" /> Tax and payout rules approved</label>
+                <label><input type="checkbox" /> NFT/drop ownership terms approved</label>
+                <label><input type="checkbox" /> Fan-facing risk disclosure approved</label>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Support tree</p>
+                  <h3>Bitcoin Marketing Plans</h3>
+                </div>
+                <button id="run-bitcoin-projection" class="secondary-button" type="button">Run Projection</button>
+              </div>
+              <div id="bitcoin-tree-list" class="match-list" data-ai-section="bitcoin-tree-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Projection</p>
+                  <h3>Supporter Reward Model</h3>
+                </div>
+              </div>
+              <div id="bitcoin-projection" class="support-answer" data-ai-section="bitcoin-vesting-projection"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="partner" class="view" aria-labelledby="view-title">
+          <div class="hero-band compact-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Business partner platform</p>
+              <h3>Give verified businesses a 50-artist roster workspace.</h3>
+              <p>Business partners pay $4,000/year to register contracted artists, access the full platform package for that roster, create private lobby spaces, and propose deals with artist profiles.</p>
+            </div>
+            <div class="hero-meter">
+              <span>Business Partner</span>
+              <strong>$4,000</strong>
+              <small>per year / 50 artist seats</small>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Partner onboarding</p>
+                  <h3>Create Business Platform</h3>
+                </div>
+              </div>
+              <form id="partner-form" class="stacked-form" data-ai-section="business-partner-onboarding">
+                <div class="form-grid">
+                  <label>
+                    Business name
+                    <input name="businessName" required aria-label="Business name" placeholder="Awobe Creative Group" />
+                  </label>
+                  <label>
+                    Contact email
+                    <input name="email" type="email" required aria-label="Business contact email" placeholder="partner@example.com" />
+                  </label>
+                  <label>
+                    Username
+                    <input name="username" required aria-label="Business username" placeholder="awobe-creative" />
+                  </label>
+                  <label>
+                    Account password
+                    <input name="password" type="password" required minlength="8" aria-label="Business account password" />
+                  </label>
+                  <label>
+                    Confirm password
+                    <input name="passwordConfirm" type="password" required minlength="8" aria-label="Confirm business account password" />
+                  </label>
+                  <label>
+                    Financial wallet password
+                    <input name="walletPassword" type="password" required minlength="8" aria-label="Business wallet password" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" aria-label="Confirm business wallet password" />
+                  </label>
+                  <label>
+                    Business type
+                    <select name="businessType" aria-label="Business type">
+                      <option>Label</option>
+                      <option>Management company</option>
+                      <option>Promoter</option>
+                      <option>Brand sponsor</option>
+                      <option>Studio / production house</option>
+                    </select>
+                  </label>
+                  <label>
+                    Annual package
+                    <input name="annualPackage" type="number" min="4000" value="4000" aria-label="Annual package" />
+                  </label>
+                  <label>
+                    Artist seat limit
+                    <input name="seatLimit" type="number" min="1" max="50" value="50" aria-label="Artist seat limit" />
+                  </label>
+                  <label>
+                    Lobby name
+                    <input name="lobbyName" required aria-label="Partner lobby name" placeholder="Awobe Artist Lobby" />
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="termsAccepted" type="checkbox" required />
+                  Business accepts partner terms, artist authorization rules, admin review, and deal-lobby conduct requirements.
+                </label>
+                <button class="primary-button" type="submit" data-ai-action="create-business-partner">Create Business Partner Platform</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Package access</p>
+                  <h3>Included for 50 Artists</h3>
+                </div>
+              </div>
+              <div class="checklist">
+                <label><input type="checkbox" checked /> Artist profile registration</label>
+                <label><input type="checkbox" checked /> Rights and proof vault workflow</label>
+                <label><input type="checkbox" checked /> Distribution and promotion tools</label>
+                <label><input type="checkbox" checked /> Launch dashboard and support desk</label>
+                <label><input type="checkbox" /> Bitcoin Tree services billed separately</label>
+                <label><input type="checkbox" /> Admin approval required for deals</label>
+              </div>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Roster registration</p>
+                  <h3>Add Contracted Artist</h3>
+                </div>
+              </div>
+              <form id="partner-artist-form" class="stacked-form" data-ai-section="partner-artist-registration">
+                <div class="form-grid">
+                  <label>
+                    Artist name
+                    <input name="artistName" required aria-label="Partner artist name" placeholder="Nova Blue" />
+                  </label>
+                  <label>
+                    Artist email
+                    <input name="artistEmail" type="email" required aria-label="Partner artist email" placeholder="artist@example.com" />
+                  </label>
+                  <label>
+                    Artist username
+                    <input name="username" required aria-label="Partner artist username" placeholder="nova-blue" />
+                  </label>
+                  <label>
+                    Account password
+                    <input name="password" type="password" required minlength="8" aria-label="Partner artist account password" />
+                  </label>
+                  <label>
+                    Confirm password
+                    <input name="passwordConfirm" type="password" required minlength="8" aria-label="Confirm partner artist account password" />
+                  </label>
+                  <label>
+                    Financial wallet password
+                    <input name="walletPassword" type="password" required minlength="8" aria-label="Partner artist wallet password" />
+                  </label>
+                  <label>
+                    Confirm wallet password
+                    <input name="walletPasswordConfirm" type="password" required minlength="8" aria-label="Confirm partner artist wallet password" />
+                  </label>
+                  <label>
+                    Contract type
+                    <select name="contractType" aria-label="Contract type">
+                      <option>Management</option>
+                      <option>Label services</option>
+                      <option>Promotion</option>
+                      <option>Distribution</option>
+                      <option>Brand campaign</option>
+                    </select>
+                  </label>
+                  <label>
+                    Access package
+                    <select name="accessPackage" aria-label="Artist access package">
+                      <option>Full platform except Bitcoin Tree</option>
+                      <option>Launch and promotion only</option>
+                      <option>Distribution and rights only</option>
+                      <option>Full platform plus Bitcoin review</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="consent-row">
+                  <input name="termsAccepted" type="checkbox" required />
+                  Artist accepts roster profile, wallet security, content access, and partner authorization terms.
+                </label>
+                <button class="secondary-button" type="submit" data-ai-action="register-partner-artist">Register Artist Seat</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Deal lobby</p>
+                  <h3>Create Proposal</h3>
+                </div>
+              </div>
+              <form id="deal-form" class="stacked-form" data-ai-section="business-artist-deal">
+                <label>
+                  Proposal title
+                  <input name="title" required placeholder="Brand campaign for summer launch" />
+                </label>
+                <label>
+                  Target artist
+                  <input name="artistName" required placeholder="Nova Blue" />
+                </label>
+                <label>
+                  Deal value
+                  <input name="dealValue" type="number" min="0" step="100" value="2500" />
+                </label>
+                <button class="secondary-button" type="submit" data-ai-action="create-deal-proposal">Create Deal Proposal</button>
+              </form>
+            </section>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Partner roster</p>
+                  <h3>Managed Artists and Deals</h3>
+                </div>
+              </div>
+              <div id="partner-roster" class="match-list" data-ai-section="partner-roster"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Internal market</p>
+                  <h3>Awobe Coin Tree</h3>
+                </div>
+                <button id="run-partner-market" class="secondary-button" type="button">Run Market Snapshot</button>
+              </div>
+              <div id="partner-market" class="support-answer" data-ai-section="partner-internal-market"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="support" class="view" aria-labelledby="view-title">
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Real support desk</p>
+                  <h3>Ask for Help</h3>
+                </div>
+              </div>
+              <form id="support-form" class="support-form" data-ai-section="artist-support">
+                <label>
+                  What are you stuck on?
+                  <textarea name="issue" required aria-label="Support issue" placeholder="I have an ISRC but no UPC, can I still track royalties?"></textarea>
+                </label>
+                <button class="primary-button" type="submit">Get Setup Guidance</button>
+              </form>
+              <div id="support-answer" class="support-answer"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-label">Subscriber profile</p>
+                  <h3>Current Account</h3>
+                </div>
+              </div>
+              <div id="subscriber-summary" class="metric-list"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./arhc-app.js"></script>
+  </body>
+</html>

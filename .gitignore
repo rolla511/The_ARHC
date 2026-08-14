@@ -1,0 +1,15 @@
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+*.icloud
+npm-debug.log*
+
+# Local runtime state; deployment should use managed storage.
+data/runtime-state.json
+data/runtime-events.jsonl
+
+# Temporary files
+*.tmp
+*.log
