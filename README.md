@@ -166,7 +166,6 @@ Current artist page file targets:
 Current public artist media targets:
 
 - `artist-media/robbie-rolla/robbie-rolla-gy-cover.png`
-- `artist-media/robbie-rolla/robbie-rolla-feature-video.mp4`
 - `artist-media/robbie-rolla/robbie-rolla-richie-case.mov`
 
 The server serves common audio types including WAV, MP3, M4A, AAC, FLAC, and OGG. It also supports byte-range requests for server-hosted media, which lets browser audio and video players stream public files directly from the backend.

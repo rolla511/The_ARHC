@@ -66,13 +66,6 @@ let artistImages = [
 
 let artistVideos = [
   {
-    id: "robbie-rolla-feature-video",
-    title: "Robbie Rolla Featured Video",
-    detail: "Public artist video",
-    src: "./artist-media/robbie-rolla/robbie-rolla-feature-video.mp4",
-    type: "video/mp4"
-  },
-  {
     id: "robbie-rolla-richie-case",
     title: "Richie & Case",
     detail: "Public artist video",
