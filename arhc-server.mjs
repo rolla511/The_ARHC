@@ -549,10 +549,34 @@ function featuredArtistPage() {
         fallback: "linear-gradient(135deg, #36c58f, #101718 50%, #e0ad4f)"
       },
       {
-        title: "We Belong Volume Visual",
-        detail: "Add additional We Belong cover art here when ready",
-        src: "./assets/robbie-rolla-we-belong-cover.jpg",
-        fallback: "linear-gradient(160deg, #e66f5c, #141819 46%, #5ca8d8)"
+        title: "Robbie Rolla GQ Cover",
+        detail: "Fitness and culture promo cover",
+        src: "./artist-media/robbie-rolla/robbie-rolla-gq-cover-light.png"
+      },
+      {
+        title: "Poolside Focus",
+        detail: "Lifestyle promo photo",
+        src: "./artist-media/robbie-rolla/robbie-rolla-pool.png"
+      },
+      {
+        title: "Mountain Discipline",
+        detail: "Athletic promo photo",
+        src: "./artist-media/robbie-rolla/robbie-rolla-snow.png"
+      },
+      {
+        title: "Beach Signal",
+        detail: "Lifestyle promo photo",
+        src: "./artist-media/robbie-rolla/robbie-rolla-beach.png"
+      },
+      {
+        title: "Yacht Moment",
+        detail: "Aspirational promo photo",
+        src: "./artist-media/robbie-rolla/robbie-rolla-yacht.png"
+      },
+      {
+        title: "Race Mode",
+        detail: "Performance promo photo",
+        src: "./artist-media/robbie-rolla/robbie-rolla-race.png"
       }
     ],
     videos: [
@@ -561,6 +585,13 @@ function featuredArtistPage() {
         title: "Richie & Case",
         detail: "Public artist video",
         src: "./artist-media/robbie-rolla/robbie-rolla-richie-case.mov",
+        type: "video/quicktime"
+      },
+      {
+        id: "robbie-rolla-da-hustlas-prayer",
+        title: "Da Hustla's Prayer",
+        detail: "Public artist video",
+        src: "./artist-media/robbie-rolla/robbie-rolla-da-hustlas-prayer.mov",
         type: "video/quicktime"
       }
     ]
