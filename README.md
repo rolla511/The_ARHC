@@ -1,5 +1,7 @@
 # Index Audio Artist Entry
 
+MUSIC/TRADING PLATFORM
+
 A local prototype for an artist-first entry point. The product now starts as a subscriber onboarding, rights proof, royalty tracking, and launch support system before becoming a fully self-dependent streaming platform.
 
 Open `index.html` directly in a browser for local-only mode, or run the server runtime:
