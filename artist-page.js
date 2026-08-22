@@ -148,6 +148,50 @@ let videoRotationLocked = false;
 
 const $ = (selector) => document.querySelector(selector);
 const money = (value) => `$${Number(value || 0).toFixed(2)}`;
+const localRuntimeRecordKey = "arhc.robbie-rolla.runtime-record";
+
+function readLocalRuntimeRecord() {
+  try {
+    return JSON.parse(localStorage.getItem(localRuntimeRecordKey)) || { events: [], totals: {} };
+  } catch {
+    return { events: [], totals: {} };
+  }
+}
+
+function writeLocalRuntimeRecord(record) {
+  localStorage.setItem(localRuntimeRecordKey, JSON.stringify(record));
+  window.arhcRuntimeRecord = record;
+}
+
+function recordLocalRuntimeEvent(payload) {
+  const record = readLocalRuntimeRecord();
+  const key = [payload.artistSlug, payload.action, payload.targetType, payload.targetId].map((part) => part || "unknown").join(":");
+  const existing = record.totals[key] || {
+    artistSlug: payload.artistSlug,
+    action: payload.action,
+    targetType: payload.targetType,
+    targetId: payload.targetId,
+    targetTitle: payload.targetTitle,
+    count: 0
+  };
+  const event = {
+    id: crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    ...payload
+  };
+
+  record.events = [...record.events, event].slice(-500);
+  record.totals[key] = {
+    ...existing,
+    targetTitle: payload.targetTitle || existing.targetTitle,
+    targetUrl: payload.targetUrl || existing.targetUrl,
+    isrc: payload.isrc || existing.isrc || "",
+    count: existing.count + 1,
+    lastEventAt: event.createdAt
+  };
+  writeLocalRuntimeRecord(record);
+  return event;
+}
 
 function resolveMediaUrl(url) {
   if (!url || !runtimeApi) return url || "";
@@ -228,24 +272,26 @@ async function loadFeaturedArtistConfig() {
 }
 
 function trackPublicEvent({ action, targetType, targetId, targetTitle, targetUrl }) {
-  if (!runtimeApi) return;
   const trackedTrack = targetType === "track" ? tracks.find((track) => track.id === targetId) : null;
+  const payload = {
+    ...artistProfile,
+    action,
+    targetType,
+    targetId,
+    targetTitle,
+    targetUrl,
+    isrc: trackedTrack?.isrc || "",
+    referrer: document.referrer,
+    pagePath: location.pathname
+  };
+  recordLocalRuntimeEvent(payload);
+  if (!runtimeApi) return;
 
   fetch(`${runtimeApi}/public/analytics`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     keepalive: true,
-    body: JSON.stringify({
-      ...artistProfile,
-      action,
-      targetType,
-      targetId,
-      targetTitle,
-      targetUrl,
-      isrc: trackedTrack?.isrc || "",
-      referrer: document.referrer,
-      pagePath: location.pathname
-    })
+    body: JSON.stringify(payload)
   }).catch(() => {});
 }
 
