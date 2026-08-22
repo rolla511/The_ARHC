@@ -212,7 +212,7 @@ function applyFeaturedArtistConfig(config) {
   $(".artist-hero img").alt = config.heroAlt || $(".artist-hero img").alt;
   $("#camera-placeholder strong").textContent = `${artistProfile.artistName} Live`;
   $("#promo-title").textContent = `${artistProfile.artistName} Around The Web`;
-  $("#support-title").textContent = "Tips, Access, And Subscriber Moments";
+  $("#support-title").textContent = "PayPal Donations And Fan Support";
 }
 
 async function loadFeaturedArtistConfig() {
@@ -262,12 +262,12 @@ function renderTracks() {
           </div>
           <span class="track-price">${track.price ? money(track.price) : "Free"}</span>
         </header>
-        <p>Public stream access. ${unlocked ? `Server audio: ${track.downloadUrl}` : "PayPal order and capture verification required before download unlock."}</p>
+        <p>Public stream access is open. Download purchase is ${money(track.price)} for this title only; each Robbie Rolla song is sold separately.</p>
         <audio class="track-player" controls preload="metadata" src="${track.streamUrl || track.downloadUrl}" data-stream-track="${track.id}"></audio>
         <div class="track-actions">
           ${track.listenUrl ? `<a class="listen-link" href="${track.listenUrl}" target="_blank" rel="noreferrer" data-track-link="${track.id}">Listen</a>` : ""}
           <button type="button" data-action="${unlocked ? "download" : "pay"}" data-track-id="${track.id}">
-            ${unlocked ? "Download WAV" : `Buy Download ${money(track.price)}`}
+            ${unlocked ? "Download Track" : `Purchase Download ${money(track.price)}`}
           </button>
         </div>
       </article>
@@ -395,9 +395,10 @@ async function downloadTrack(track) {
 
 async function createPaypalOrder({ amount, purpose, label, email = "fan@example.com" }) {
   if (!runtimeApi) {
-    setPaymentStatus("Run the ARHC server runtime to create PayPal orders for paid downloads.");
+    setPaymentStatus("Connect the ARHC Render server runtime to create PayPal orders for downloads and donations.");
     return null;
   }
+  const isDonation = purpose === "artist-tip";
 
   const response = await fetch(`${runtimeApi}/payments/paypal/create-order`, {
     method: "POST",
@@ -405,12 +406,12 @@ async function createPaypalOrder({ amount, purpose, label, email = "fan@example.
     body: JSON.stringify({
       payerType: "fan",
       payerUsername: "robbie-rolla-page-fan",
-      plan: "music-download",
+      plan: isDonation ? "artist-tip" : "music-download",
       billingCycle: "one-time",
       amount,
       currency: "USD",
       marketPurpose: purpose,
-      walletStatus: "Not required for music download",
+      walletStatus: isDonation ? "Prototype Bitcoin access not required for donation" : "Not required for music download",
       contactEmail: email,
       billingConsent: true
     })
@@ -426,7 +427,7 @@ async function createPaypalOrder({ amount, purpose, label, email = "fan@example.
 
   if (result.approvalUrl) {
     window.open(result.approvalUrl, "_blank", "noreferrer");
-    setPaymentStatus(`${label} PayPal order created. Download unlock waits for capture verification.`);
+    setPaymentStatus(`${label} PayPal order created. ${isDonation ? "Donation processing waits for capture verification." : "Download unlock waits for capture verification."}`);
   }
 
   return result;

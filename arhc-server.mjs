@@ -467,7 +467,7 @@ function featuredArtistPage() {
     title: "Robbie Rolla | The ARHC Artist Page",
     heroImage: "./assets/robbie-rolla-live.png",
     heroAlt: "Robbie Rolla artist page live studio backdrop",
-    tagline: "Music downloads, live sessions, and direct fan access through The ARHC.",
+    tagline: "The ARHC presents Robbie Rolla: live video streaming, fan messages, PayPal donations, prototype Bitcoin access support, and $1.99 song downloads sold separately.",
     accessMode: "public-viewing",
     signInRequired: false,
     serverControlled: true,
@@ -475,7 +475,7 @@ function featuredArtistPage() {
       {
         id: "we-belong-part-1",
         title: "We Belong",
-        mood: "We Belong volume, part 1",
+        mood: "$1.99 download sold separately",
         price: 1.99,
         paid: true,
         isrc: "QT7J52600020",
@@ -488,7 +488,7 @@ function featuredArtistPage() {
       {
         id: "we-belong-part-2-for-wishing",
         title: "for wishing",
-        mood: "We Belong volume, part 2",
+        mood: "$1.99 download sold separately",
         price: 1.99,
         paid: true,
         isrc: "QT7J52600021",
