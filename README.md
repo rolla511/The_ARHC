@@ -34,6 +34,14 @@ Deployment split:
 - Streams remain public and do not require sign-in.
 - Stream, replay, link, and download analytics are posted to the Render API.
 
+Render server deploy:
+
+- Server entry file: `arhc-server.mjs`.
+- Start command: `npm start`.
+- Health check path: `/api/health`.
+- Blueprint file: `render.yaml`.
+- No `index.mjs` is required for Render because `package.json` points `npm start` to `arhc-server.mjs`.
+
 ## Entry Plans
 
 - `$45/year` Platform Access: artist page, music uploads, streaming access, launch dashboard, and support.
