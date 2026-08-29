@@ -468,7 +468,7 @@ function featuredArtistPage() {
     title: "Robbie Rolla | The ARHC Artist Page",
     heroImage: "./assets/robbie-rolla-live.png",
     heroAlt: "Robbie Rolla artist page live studio backdrop",
-    tagline: "The ARHC presents Robbie Rolla: live video streaming, fan messages, PayPal donations, prototype Bitcoin access support, and $1.99 song downloads sold separately.",
+    tagline: "The ARHC presents Robbie Rolla: music, live moments, fan messages, direct support, and $1.99 song downloads sold separately.",
     accessMode: "public-viewing",
     signInRequired: false,
     serverControlled: true,
@@ -498,6 +498,19 @@ function featuredArtistPage() {
         fileName: "Robbie Rolla - We Belong Part 2 - for wishing.mp3",
         listenUrl: "",
         art: "radial-gradient(circle at 30% 22%, #f8faf7, #5ca8d8 34%, #141819 72%)"
+      },
+      {
+        id: "black-light",
+        title: "Black Light",
+        mood: "$1.99 download sold separately",
+        price: 1.99,
+        paid: true,
+        isrc: "",
+        streamUrl: "./artist-audio/robbie-rolla/black-light.mp3",
+        downloadUrl: "./artist-audio/robbie-rolla/black-light.mp3",
+        fileName: "Robbie Rolla - Black Light.mp3",
+        listenUrl: "",
+        art: "linear-gradient(135deg, #101718, #7338a7 45%, #36c58f)"
       }
     ],
     promoLinks: [
