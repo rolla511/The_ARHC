@@ -25,6 +25,7 @@ function loadLocalEnv() {
 loadLocalEnv();
 
 const PORT = Number(process.env.PORT || 3000);
+const HOST = process.env.HOST || "0.0.0.0";
 const DATA_DIR = path.join(ROOT, "data");
 const STATE_FILE = path.join(DATA_DIR, "runtime-state.json");
 const EVENT_FILE = path.join(DATA_DIR, "runtime-events.jsonl");
@@ -1739,8 +1740,8 @@ function startServer() {
     process.exitCode = 1;
   });
 
-  server.listen(PORT, "127.0.0.1", () => {
-    console.log(`Index Audio runtime listening at http://127.0.0.1:${PORT}`);
+  server.listen(PORT, HOST, () => {
+    console.log(`Index Audio runtime listening at http://${HOST}:${PORT}`);
   });
 }
 
