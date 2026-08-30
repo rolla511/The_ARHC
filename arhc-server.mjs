@@ -36,6 +36,7 @@ const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET || process.env.PAY
 const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID || "";
 const PAYPAL_RETURN_URL = process.env.PAYPAL_RETURN_URL || `http://127.0.0.1:${PORT}/#billing`;
 const PAYPAL_CANCEL_URL = process.env.PAYPAL_CANCEL_URL || `http://127.0.0.1:${PORT}/#billing`;
+const ISRC_PREFIX = process.env.ISRC_PREFIX || "";
 
 const billingPlanDefaults = {
   "artist-platform": { amount: 45, cycle: "yearly" },
@@ -461,6 +462,11 @@ function analyticsKey({ artistSlug, action, targetType, targetId }) {
   return [artistSlug, action, targetType, targetId].map((part) => cleanText(part, "unknown")).join(":");
 }
 
+function artistIsrc(serial, fallback = "") {
+  if (!ISRC_PREFIX) return fallback;
+  return `${ISRC_PREFIX}${String(serial).padStart(5, "0")}`;
+}
+
 function featuredArtistPage() {
   return {
     artistSlug: "robbie-rolla",
@@ -505,7 +511,7 @@ function featuredArtistPage() {
         mood: "$1.99 download sold separately",
         price: 1.99,
         paid: true,
-        isrc: "",
+        isrc: artistIsrc(100),
         streamUrl: "./artist-audio/robbie-rolla/black-light.mp3",
         downloadUrl: "./artist-audio/robbie-rolla/black-light.mp3",
         fileName: "Robbie Rolla - Black Light.mp3",
