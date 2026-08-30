@@ -37,6 +37,7 @@ const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID || "";
 const PAYPAL_RETURN_URL = process.env.PAYPAL_RETURN_URL || `http://127.0.0.1:${PORT}/#billing`;
 const PAYPAL_CANCEL_URL = process.env.PAYPAL_CANCEL_URL || `http://127.0.0.1:${PORT}/#billing`;
 const ISRC_PREFIX = process.env.ISRC_PREFIX || "";
+const ROBBIE_ROLLA_ACCESS_CODE = process.env.ROBBIE_ROLLA_ACCESS_CODE || process.env.ARHC_ARTIST_ACCESS_CODE || "";
 
 const billingPlanDefaults = {
   "artist-platform": { amount: 45, cycle: "yearly" },
@@ -279,6 +280,12 @@ function initialState() {
       events: [],
       totals: {}
     },
+    artistAccess: {
+      sessions: [],
+      uploads: [],
+      isrcAssignments: [],
+      nextIsrcSerial: 100
+    },
     requests: []
   };
 }
@@ -369,6 +376,14 @@ function normalizeState(state) {
       ...(state.publicAnalytics || {}),
       events: Array.isArray(state.publicAnalytics?.events) ? state.publicAnalytics.events : [],
       totals: typeof state.publicAnalytics?.totals === "object" && state.publicAnalytics.totals ? state.publicAnalytics.totals : {}
+    },
+    artistAccess: {
+      ...base.artistAccess,
+      ...(state.artistAccess || {}),
+      sessions: Array.isArray(state.artistAccess?.sessions) ? state.artistAccess.sessions : [],
+      uploads: Array.isArray(state.artistAccess?.uploads) ? state.artistAccess.uploads : [],
+      isrcAssignments: Array.isArray(state.artistAccess?.isrcAssignments) ? state.artistAccess.isrcAssignments : [],
+      nextIsrcSerial: Number(state.artistAccess?.nextIsrcSerial || base.artistAccess.nextIsrcSerial)
     },
     contents: Array.isArray(state.contents) ? state.contents : base.contents,
     requests: Array.isArray(state.requests) ? state.requests : []
@@ -465,6 +480,83 @@ function analyticsKey({ artistSlug, action, targetType, targetId }) {
 function artistIsrc(serial, fallback = "") {
   if (!ISRC_PREFIX) return fallback;
   return `${ISRC_PREFIX}${String(serial).padStart(5, "0")}`;
+}
+
+function publicAnalyticsEvent(payload, state) {
+  return {
+    id: randomUUID(),
+    type: "public.analytics.recorded",
+    payload,
+    createdAt: platformNowIso(state)
+  };
+}
+
+function trackTitleFromPath(pathname) {
+  const file = path.basename(pathname).replace(path.extname(pathname), "");
+  const track = featuredArtistPage().tracks.find((candidate) => {
+    return candidate.streamUrl.endsWith(`${file}.mp3`) || candidate.downloadUrl.endsWith(`${file}.mp3`);
+  });
+  return track || {
+    id: file,
+    title: file.split("-").map((part) => part ? `${part[0].toUpperCase()}${part.slice(1)}` : part).join(" "),
+    isrc: ""
+  };
+}
+
+async function recordPublicAnalytics(payload) {
+  const currentState = await readState();
+  const event = publicAnalyticsEvent(payload, currentState);
+  const state = applyRuntimeEvent(currentState, event);
+  await writeState(state);
+  await appendEvent(event);
+  return { event, totals: state.publicAnalytics.totals };
+}
+
+async function recordMediaRequest({ pathname, request, stat }) {
+  if (!pathname.startsWith("/artist-audio/") && !pathname.startsWith("/artist-media/")) return;
+
+  const extension = path.extname(pathname).toLowerCase();
+  const range = request.headers.range || "";
+  const firstByteRequest = !range || /^bytes=0-/i.test(range);
+  if (!firstByteRequest) return;
+  const track = extension === ".mp3" ? trackTitleFromPath(pathname) : null;
+  const action = extension === ".mp3" && firstByteRequest ? "stream.requested" : "media.requested";
+  const targetType = extension === ".mp3" ? "track" : "media";
+  const targetId = track?.id || path.basename(pathname);
+
+  await recordPublicAnalytics({
+    artistSlug: "robbie-rolla",
+    artistName: "Robbie Rolla",
+    action,
+    targetType,
+    targetId,
+    targetTitle: track?.title || path.basename(pathname),
+    targetUrl: pathname,
+    isrc: track?.isrc || "",
+    referrer: request.headers.referer || "",
+    pagePath: pathname,
+    bytes: stat.size,
+    range
+  });
+}
+
+function artistSessionToken(request) {
+  const header = request.headers.authorization || "";
+  if (header.toLowerCase().startsWith("bearer ")) return header.slice(7).trim();
+  return "";
+}
+
+function validArtistSession(state, token) {
+  const now = Date.now();
+  return state.artistAccess.sessions.some((session) => {
+    return session.token === token && session.artistSlug === "robbie-rolla" && Date.parse(session.expiresAt) > now;
+  });
+}
+
+function nextArtistIsrc(state) {
+  const serial = Number(state.artistAccess.nextIsrcSerial || 100);
+  state.artistAccess.nextIsrcSerial = Math.min(serial + 1, 10000);
+  return artistIsrc(serial);
 }
 
 function featuredArtistPage() {
@@ -1310,7 +1402,7 @@ function sendJson(response, statusCode, body) {
     "Cache-Control": "no-store",
     "Access-Control-Allow-Origin": process.env.ARHC_PUBLIC_ORIGIN || "*",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, PayPal-Auth-Algo, PayPal-Cert-Url, PayPal-Transmission-Id, PayPal-Transmission-Sig, PayPal-Transmission-Time"
+    "Access-Control-Allow-Headers": "Authorization, Content-Type, PayPal-Auth-Algo, PayPal-Cert-Url, PayPal-Transmission-Id, PayPal-Transmission-Sig, PayPal-Transmission-Time"
   });
   response.end(`${JSON.stringify(body, null, 2)}\n`);
 }
@@ -1347,6 +1439,9 @@ async function serveStatic(request, response) {
       ".mov": "video/quicktime"
     };
     const stat = await fs.stat(filePath);
+    recordMediaRequest({ pathname, request, stat }).catch((error) => {
+      console.error("Media analytics failed:", error.message);
+    });
     const contentType = contentTypes[extension] || "application/octet-stream";
     const staticHeaders = {
       "Content-Type": contentType,
@@ -1408,7 +1503,7 @@ function createServer() {
       response.writeHead(204, {
         "Access-Control-Allow-Origin": process.env.ARHC_PUBLIC_ORIGIN || "*",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, PayPal-Auth-Algo, PayPal-Cert-Url, PayPal-Transmission-Id, PayPal-Transmission-Sig, PayPal-Transmission-Time",
+        "Access-Control-Allow-Headers": "Authorization, Content-Type, PayPal-Auth-Algo, PayPal-Cert-Url, PayPal-Transmission-Id, PayPal-Transmission-Sig, PayPal-Transmission-Time",
         "Access-Control-Max-Age": "86400"
       });
       response.end();
@@ -1475,6 +1570,26 @@ function createServer() {
       return;
     }
 
+    if (request.method === "GET" && url.pathname === "/api/public/analytics/pixel") {
+      await recordPublicAnalytics({
+        artistSlug: cleanText(url.searchParams.get("artistSlug"), "robbie-rolla"),
+        artistName: cleanText(url.searchParams.get("artistName"), "Robbie Rolla"),
+        action: cleanText(url.searchParams.get("action"), "page.server_viewed"),
+        targetType: cleanText(url.searchParams.get("targetType"), "page"),
+        targetId: cleanText(url.searchParams.get("targetId"), "artist-page"),
+        targetTitle: cleanText(url.searchParams.get("targetTitle"), "Robbie Rolla Artist Page"),
+        targetUrl: cleanText(url.searchParams.get("targetUrl"), request.headers.referer || ""),
+        referrer: request.headers.referer || "",
+        pagePath: cleanText(url.searchParams.get("pagePath"), "/artist_page/index.html")
+      });
+      response.writeHead(204, {
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": process.env.ARHC_PUBLIC_ORIGIN || "*"
+      });
+      response.end();
+      return;
+    }
+
     if (request.method === "POST" && url.pathname === "/api/public/analytics") {
       const body = await readJson(request);
       const currentState = await readState();
@@ -1488,6 +1603,103 @@ function createServer() {
       await writeState(state);
       await appendEvent(event);
       sendJson(response, 200, { event, totals: state.publicAnalytics.totals });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/artist/robbie-rolla/login") {
+      const body = await readJson(request);
+      const artistName = cleanText(body.artistName).toLowerCase();
+      const accessCode = cleanText(body.accessCode);
+
+      if (!ROBBIE_ROLLA_ACCESS_CODE) {
+        sendJson(response, 503, { error: "Artist sign in is not ready yet." });
+        return;
+      }
+
+      if (!artistName.includes("robbie") || accessCode !== ROBBIE_ROLLA_ACCESS_CODE) {
+        sendJson(response, 401, { error: "Artist credentials were not accepted." });
+        return;
+      }
+
+      const currentState = await readState();
+      const now = platformNowIso(currentState);
+      const session = {
+        id: randomUUID(),
+        token: randomUUID(),
+        artistSlug: "robbie-rolla",
+        artistName: "Robbie Rolla",
+        createdAt: now,
+        expiresAt: addDays(now, 1)
+      };
+      const state = {
+        ...currentState,
+        artistAccess: {
+          ...currentState.artistAccess,
+          sessions: [...currentState.artistAccess.sessions.filter((entry) => Date.parse(entry.expiresAt) > Date.now()), session].slice(-20)
+        }
+      };
+      await writeState(state);
+      sendJson(response, 200, {
+        artistSlug: session.artistSlug,
+        artistName: session.artistName,
+        token: session.token,
+        expiresAt: session.expiresAt
+      });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/artist/robbie-rolla/uploads/audio") {
+      const currentState = await readState();
+      const token = artistSessionToken(request);
+      if (!validArtistSession(currentState, token)) {
+        sendJson(response, 401, { error: "Artist sign in is required for uploads." });
+        return;
+      }
+
+      const body = await readJson(request);
+      const title = cleanText(body.title, "Untitled Upload");
+      const existingIsrc = cleanText(body.isrc).toUpperCase();
+      const fileName = cleanText(body.fileName, `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.mp3`);
+      const audioBase64 = cleanText(body.audioBase64);
+      const assignedIsrc = existingIsrc || nextArtistIsrc(currentState);
+
+      if (!existingIsrc && !assignedIsrc) {
+        sendJson(response, 400, { error: "ISRC_PREFIX is required before The ARHC can assign an ISRC." });
+        return;
+      }
+
+      const upload = {
+        id: randomUUID(),
+        artistSlug: "robbie-rolla",
+        artistName: "Robbie Rolla",
+        title,
+        fileName,
+        isrc: assignedIsrc,
+        isrcSource: existingIsrc ? "artist-supplied" : "arhc-assigned",
+        streamUrl: `./artist-audio/robbie-rolla/${fileName}`,
+        createdAt: platformNowIso(currentState)
+      };
+
+      if (audioBase64) {
+        const safeFileName = fileName.replace(/[^a-zA-Z0-9._-]/g, "-");
+        const audioDir = path.join(ROOT, "artist-audio", "robbie-rolla");
+        await fs.mkdir(audioDir, { recursive: true });
+        await fs.writeFile(path.join(audioDir, safeFileName), Buffer.from(audioBase64, "base64"));
+        upload.fileName = safeFileName;
+        upload.streamUrl = `./artist-audio/robbie-rolla/${safeFileName}`;
+      }
+
+      currentState.artistAccess.uploads.push(upload);
+      currentState.artistAccess.isrcAssignments.push({
+        id: randomUUID(),
+        uploadId: upload.id,
+        title: upload.title,
+        isrc: upload.isrc,
+        source: upload.isrcSource,
+        createdAt: upload.createdAt
+      });
+      await writeState(currentState);
+      sendJson(response, 200, { upload });
       return;
     }
 
