@@ -29,7 +29,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 const DATA_DIR = path.join(ROOT, "data");
 const STATE_FILE = path.join(DATA_DIR, "runtime-state.json");
 const EVENT_FILE = path.join(DATA_DIR, "runtime-events.jsonl");
-const PAYPAL_ENV = process.env.PAYPAL_ENV || "sandbox";
+const PAYPAL_ENV = process.env.PAYPAL_ENV || "live";
 const PAYPAL_BASE_URL = PAYPAL_ENV === "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID || "";
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET || process.env.PAYAPAL_SECRET_ID || process.env.PAYPAL_SECRET_ID || "";
