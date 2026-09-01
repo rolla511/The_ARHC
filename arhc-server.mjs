@@ -34,8 +34,9 @@ const PAYPAL_BASE_URL = PAYPAL_ENV === "live" ? "https://api-m.paypal.com" : "ht
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID || "";
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET || process.env.PAYAPAL_SECRET_ID || process.env.PAYPAL_SECRET_ID || "";
 const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID || "";
-const PAYPAL_RETURN_URL = process.env.PAYPAL_RETURN_URL || `http://127.0.0.1:${PORT}/#billing`;
-const PAYPAL_CANCEL_URL = process.env.PAYPAL_CANCEL_URL || `http://127.0.0.1:${PORT}/#billing`;
+const ARTIST_PAGE_URL = process.env.ARHC_ARTIST_PAGE_URL || "https://aw-roadside.onrender.com/artist_page/index.html";
+const PAYPAL_RETURN_URL = process.env.PAYPAL_RETURN_URL || `${ARTIST_PAGE_URL}#support`;
+const PAYPAL_CANCEL_URL = process.env.PAYPAL_CANCEL_URL || `${ARTIST_PAGE_URL}#music`;
 const ISRC_PREFIX = process.env.ISRC_PREFIX || "";
 const ROBBIE_ROLLA_ACCESS_CODE = process.env.ROBBIE_ROLLA_ACCESS_CODE || process.env.ARHC_ARTIST_ACCESS_CODE || "";
 
@@ -555,8 +556,18 @@ function validArtistSession(state, token) {
 
 function nextArtistIsrc(state) {
   const serial = Number(state.artistAccess.nextIsrcSerial || 100);
+  if (serial > 10000) return "";
   state.artistAccess.nextIsrcSerial = Math.min(serial + 1, 10000);
   return artistIsrc(serial);
+}
+
+function matchingCollectionIsrc(state, albumTitle) {
+  const normalized = cleanText(albumTitle).toLowerCase();
+  if (!normalized) return "";
+  const match = [...state.artistAccess.uploads].reverse().find((upload) => {
+    return cleanText(upload.albumTitle).toLowerCase() === normalized && cleanText(upload.collectionIsrc);
+  });
+  return cleanText(match?.collectionIsrc);
 }
 
 function featuredArtistPage() {
@@ -1658,13 +1669,22 @@ function createServer() {
 
       const body = await readJson(request);
       const title = cleanText(body.title, "Untitled Upload");
+      const uploadType = cleanText(body.uploadType, "single");
+      const albumTitle = cleanText(body.albumTitle);
+      const existingAlbumIsrc = cleanText(body.albumIsrc).toUpperCase();
       const existingIsrc = cleanText(body.isrc).toUpperCase();
       const fileName = cleanText(body.fileName, `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.mp3`);
       const audioBase64 = cleanText(body.audioBase64);
+      const collectionIsrc = uploadType === "single" ? "" : existingAlbumIsrc || matchingCollectionIsrc(currentState, albumTitle) || nextArtistIsrc(currentState);
       const assignedIsrc = existingIsrc || nextArtistIsrc(currentState);
 
       if (!existingIsrc && !assignedIsrc) {
         sendJson(response, 400, { error: "ISRC_PREFIX is required before The ARHC can assign an ISRC." });
+        return;
+      }
+
+      if (uploadType !== "single" && !collectionIsrc) {
+        sendJson(response, 400, { error: "ISRC_PREFIX is required before The ARHC can assign an album, volume, or series ISRC." });
         return;
       }
 
@@ -1674,6 +1694,10 @@ function createServer() {
         artistName: "Robbie Rolla",
         title,
         fileName,
+        uploadType,
+        albumTitle,
+        collectionIsrc,
+        collectionIsrcSource: collectionIsrc && existingAlbumIsrc ? "artist-supplied" : collectionIsrc ? "arhc-assigned" : "",
         isrc: assignedIsrc,
         isrcSource: existingIsrc ? "artist-supplied" : "arhc-assigned",
         streamUrl: `./artist-audio/robbie-rolla/${fileName}`,
@@ -1696,6 +1720,8 @@ function createServer() {
         title: upload.title,
         isrc: upload.isrc,
         source: upload.isrcSource,
+        collectionIsrc: upload.collectionIsrc,
+        collectionTitle: upload.albumTitle,
         createdAt: upload.createdAt
       });
       await writeState(currentState);
