@@ -620,6 +620,19 @@ function featuredArtistPage() {
         fileName: "Robbie Rolla - Black Light.mp3",
         listenUrl: "",
         art: "linear-gradient(135deg, #101718, #7338a7 45%, #36c58f)"
+      },
+      {
+        id: "beyond-the-paint-freestyle",
+        title: "Beyond The Paint",
+        mood: "Robbie Rolla freestyle, $1.99 download sold separately",
+        price: 1.99,
+        paid: true,
+        isrc: artistIsrc(101),
+        streamUrl: "./artist-audio/robbie-rolla/beyond-the-paint-freestyle.mp3",
+        downloadUrl: "./artist-audio/robbie-rolla/beyond-the-paint-freestyle.mp3",
+        fileName: "Robbie Rolla - Beyond The Paint Freestyle.mp3",
+        listenUrl: "",
+        art: "url('./artist-media/robbie-rolla/robbie-rolla-gy-cover.png') center / cover"
       }
     ],
     promoLinks: [
