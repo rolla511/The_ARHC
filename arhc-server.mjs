@@ -39,6 +39,9 @@ const PAYPAL_RETURN_URL = process.env.PAYPAL_RETURN_URL || `${ARTIST_PAGE_URL}#s
 const PAYPAL_CANCEL_URL = process.env.PAYPAL_CANCEL_URL || `${ARTIST_PAGE_URL}#music`;
 const ISRC_PREFIX = process.env.ISRC_PREFIX || "";
 const ROBBIE_ROLLA_ACCESS_CODE = process.env.ROBBIE_ROLLA_ACCESS_CODE || process.env.ARHC_ARTIST_ACCESS_CODE || "";
+const DATABASE_URL = process.env.INTERNAL_DATABASE_URL || process.env.DATABASE_URL || "";
+let databasePoolPromise = null;
+let analyticsSchemaReady = false;
 
 const billingPlanDefaults = {
   "artist-platform": { amount: 45, cycle: "yearly" },
@@ -478,6 +481,275 @@ function analyticsKey({ artistSlug, action, targetType, targetId }) {
   return [artistSlug, action, targetType, targetId].map((part) => cleanText(part, "unknown")).join(":");
 }
 
+async function databasePool() {
+  if (!DATABASE_URL) return null;
+  if (!databasePoolPromise) {
+    databasePoolPromise = import("pg")
+      .then(({ Pool }) => new Pool({
+        connectionString: DATABASE_URL,
+        connectionTimeoutMillis: 5000,
+        idleTimeoutMillis: 10000,
+        max: 3
+      }))
+      .catch((error) => {
+        console.error("Database driver unavailable:", error.message);
+        return null;
+      });
+  }
+  return databasePoolPromise;
+}
+
+async function ensureAnalyticsSchema() {
+  const pool = await databasePool();
+  if (!pool) return false;
+  if (analyticsSchemaReady) return true;
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS arhc_artist_analytics_events (
+      id TEXT PRIMARY KEY,
+      artist_slug TEXT NOT NULL,
+      artist_name TEXT NOT NULL,
+      action TEXT NOT NULL,
+      target_type TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      target_title TEXT,
+      target_url TEXT,
+      isrc TEXT,
+      referrer TEXT,
+      page_path TEXT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS arhc_artist_analytics_totals (
+      analytics_key TEXT PRIMARY KEY,
+      artist_slug TEXT NOT NULL,
+      artist_name TEXT NOT NULL,
+      action TEXT NOT NULL,
+      target_type TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      target_title TEXT,
+      target_url TEXT,
+      isrc TEXT,
+      count BIGINT NOT NULL DEFAULT 0,
+      first_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      last_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+  await pool.query("CREATE INDEX IF NOT EXISTS arhc_artist_analytics_events_artist_created_idx ON arhc_artist_analytics_events (artist_slug, created_at DESC)");
+  analyticsSchemaReady = true;
+  return true;
+}
+
+function analyticsRecordFromPayload(payload, createdAt = new Date().toISOString()) {
+  return {
+    id: randomUUID(),
+    artistSlug: cleanText(payload.artistSlug, "robbie-rolla"),
+    artistName: cleanText(payload.artistName, "Robbie Rolla"),
+    action: cleanText(payload.action, "page.view"),
+    targetType: cleanText(payload.targetType, "page"),
+    targetId: cleanText(payload.targetId, "artist-page"),
+    targetTitle: cleanText(payload.targetTitle),
+    targetUrl: cleanText(payload.targetUrl),
+    isrc: cleanText(payload.isrc),
+    referrer: cleanText(payload.referrer),
+    pagePath: cleanText(payload.pagePath),
+    createdAt
+  };
+}
+
+function analyticsTotalsFromRows(rows) {
+  return Object.fromEntries(rows.map((row) => [row.analytics_key, {
+    artistSlug: row.artist_slug,
+    artistName: row.artist_name,
+    action: row.action,
+    targetType: row.target_type,
+    targetId: row.target_id,
+    targetTitle: row.target_title || "",
+    targetUrl: row.target_url || "",
+    isrc: row.isrc || "",
+    count: Number(row.count || 0),
+    firstAt: row.first_at,
+    lastAt: row.last_at
+  }]));
+}
+
+async function readPublicAnalyticsFromDatabase() {
+  try {
+    if (!await ensureAnalyticsSchema()) return null;
+    const pool = await databasePool();
+    const [eventsResult, totalsResult] = await Promise.all([
+      pool.query(`
+        SELECT id, artist_slug, artist_name, action, target_type, target_id, target_title, target_url, isrc, referrer, page_path, created_at
+        FROM arhc_artist_analytics_events
+        ORDER BY created_at DESC
+        LIMIT 1000
+      `),
+      pool.query("SELECT * FROM arhc_artist_analytics_totals")
+    ]);
+    return {
+      events: eventsResult.rows.map((row) => ({
+        id: row.id,
+        artistSlug: row.artist_slug,
+        artistName: row.artist_name,
+        action: row.action,
+        targetType: row.target_type,
+        targetId: row.target_id,
+        targetTitle: row.target_title || "",
+        targetUrl: row.target_url || "",
+        isrc: row.isrc || "",
+        referrer: row.referrer || "",
+        pagePath: row.page_path || "",
+        createdAt: row.created_at
+      })),
+      totals: analyticsTotalsFromRows(totalsResult.rows)
+    };
+  } catch (error) {
+    console.error("Database analytics read failed:", error.message);
+    return null;
+  }
+}
+
+async function recordPublicAnalyticsInDatabase(payload, createdAt) {
+  try {
+    if (!await ensureAnalyticsSchema()) return null;
+    const pool = await databasePool();
+    const record = analyticsRecordFromPayload(payload, createdAt);
+    const key = analyticsKey(record);
+
+    await pool.query(`
+      INSERT INTO arhc_artist_analytics_events (
+        id, artist_slug, artist_name, action, target_type, target_id, target_title, target_url, isrc, referrer, page_path, created_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    `, [
+      record.id,
+      record.artistSlug,
+      record.artistName,
+      record.action,
+      record.targetType,
+      record.targetId,
+      record.targetTitle,
+      record.targetUrl,
+      record.isrc,
+      record.referrer,
+      record.pagePath,
+      record.createdAt
+    ]);
+
+    await pool.query(`
+      INSERT INTO arhc_artist_analytics_totals (
+        analytics_key, artist_slug, artist_name, action, target_type, target_id, target_title, target_url, isrc, count, first_at, last_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 1, $10, $10)
+      ON CONFLICT (analytics_key)
+      DO UPDATE SET
+        artist_name = EXCLUDED.artist_name,
+        target_title = COALESCE(NULLIF(EXCLUDED.target_title, ''), arhc_artist_analytics_totals.target_title),
+        target_url = COALESCE(NULLIF(EXCLUDED.target_url, ''), arhc_artist_analytics_totals.target_url),
+        isrc = COALESCE(NULLIF(EXCLUDED.isrc, ''), arhc_artist_analytics_totals.isrc),
+        count = arhc_artist_analytics_totals.count + 1,
+        last_at = EXCLUDED.last_at
+    `, [
+      key,
+      record.artistSlug,
+      record.artistName,
+      record.action,
+      record.targetType,
+      record.targetId,
+      record.targetTitle,
+      record.targetUrl,
+      record.isrc,
+      record.createdAt
+    ]);
+
+    return await readPublicAnalyticsFromDatabase();
+  } catch (error) {
+    console.error("Database analytics write failed:", error.message);
+    return null;
+  }
+}
+
+async function seedDatabaseAnalyticsFromState(state) {
+  try {
+    if (!await ensureAnalyticsSchema()) return false;
+    const pool = await databasePool();
+    const events = Array.isArray(state?.publicAnalytics?.events) ? state.publicAnalytics.events : [];
+    const totals = state?.publicAnalytics?.totals && typeof state.publicAnalytics.totals === "object" ? state.publicAnalytics.totals : {};
+
+    for (const event of events) {
+      const record = analyticsRecordFromPayload(event, event.createdAt || new Date().toISOString());
+      await pool.query(`
+        INSERT INTO arhc_artist_analytics_events (
+          id, artist_slug, artist_name, action, target_type, target_id, target_title, target_url, isrc, referrer, page_path, created_at
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        ON CONFLICT (id) DO NOTHING
+      `, [
+        cleanText(event.id, record.id),
+        record.artistSlug,
+        record.artistName,
+        record.action,
+        record.targetType,
+        record.targetId,
+        record.targetTitle,
+        record.targetUrl,
+        record.isrc,
+        record.referrer,
+        record.pagePath,
+        record.createdAt
+      ]);
+    }
+
+    for (const [key, total] of Object.entries(totals)) {
+      const record = analyticsRecordFromPayload(total, total.lastAt || new Date().toISOString());
+      const count = Math.max(0, Number(total.count || 0));
+      if (!count) continue;
+
+      await pool.query(`
+        INSERT INTO arhc_artist_analytics_totals (
+          analytics_key, artist_slug, artist_name, action, target_type, target_id, target_title, target_url, isrc, count, first_at, last_at
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        ON CONFLICT (analytics_key)
+        DO UPDATE SET
+          artist_name = EXCLUDED.artist_name,
+          target_title = COALESCE(NULLIF(EXCLUDED.target_title, ''), arhc_artist_analytics_totals.target_title),
+          target_url = COALESCE(NULLIF(EXCLUDED.target_url, ''), arhc_artist_analytics_totals.target_url),
+          isrc = COALESCE(NULLIF(EXCLUDED.isrc, ''), arhc_artist_analytics_totals.isrc),
+          count = GREATEST(arhc_artist_analytics_totals.count, EXCLUDED.count),
+          first_at = LEAST(arhc_artist_analytics_totals.first_at, EXCLUDED.first_at),
+          last_at = GREATEST(arhc_artist_analytics_totals.last_at, EXCLUDED.last_at)
+      `, [
+        key,
+        record.artistSlug,
+        record.artistName,
+        record.action,
+        record.targetType,
+        record.targetId,
+        record.targetTitle,
+        record.targetUrl,
+        record.isrc,
+        count,
+        total.firstAt || record.createdAt,
+        total.lastAt || record.createdAt
+      ]);
+    }
+    return true;
+  } catch (error) {
+    console.error("Database analytics seed failed:", error.message);
+    return false;
+  }
+}
+
+async function readPublicAnalytics() {
+  const state = await readState();
+  await seedDatabaseAnalyticsFromState(state);
+  const databaseAnalytics = await readPublicAnalyticsFromDatabase();
+  if (databaseAnalytics) return databaseAnalytics;
+  return state.publicAnalytics;
+}
+
 function artistIsrc(serial, fallback = "") {
   if (!ISRC_PREFIX) return fallback;
   return `${ISRC_PREFIX}${String(serial).padStart(5, "0")}`;
@@ -510,7 +782,8 @@ async function recordPublicAnalytics(payload) {
   const state = applyRuntimeEvent(currentState, event);
   await writeState(state);
   await appendEvent(event);
-  return { event, totals: state.publicAnalytics.totals };
+  const databaseAnalytics = await recordPublicAnalyticsInDatabase(event.payload, event.createdAt);
+  return { event, totals: databaseAnalytics?.totals || state.publicAnalytics.totals };
 }
 
 async function recordMediaRequest({ pathname, request, stat }) {
@@ -1580,17 +1853,15 @@ function createServer() {
     }
 
     if (request.method === "GET" && url.pathname === "/api/featured-artists/robbie-rolla") {
-      const state = await readState();
       sendJson(response, 200, {
         ...featuredArtistPage(),
-        analytics: state.publicAnalytics
+        analytics: await readPublicAnalytics()
       });
       return;
     }
 
     if (request.method === "GET" && url.pathname === "/api/public/analytics") {
-      const state = await readState();
-      sendJson(response, 200, state.publicAnalytics);
+      sendJson(response, 200, await readPublicAnalytics());
       return;
     }
 
@@ -1616,17 +1887,7 @@ function createServer() {
 
     if (request.method === "POST" && url.pathname === "/api/public/analytics") {
       const body = await readJson(request);
-      const currentState = await readState();
-      const event = {
-        id: randomUUID(),
-        type: "public.analytics.recorded",
-        payload: body,
-        createdAt: platformNowIso(currentState)
-      };
-      const state = applyRuntimeEvent(currentState, event);
-      await writeState(state);
-      await appendEvent(event);
-      sendJson(response, 200, { event, totals: state.publicAnalytics.totals });
+      sendJson(response, 200, await recordPublicAnalytics(body));
       return;
     }
 
